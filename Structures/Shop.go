@@ -24,7 +24,7 @@ func (this *Shop) SetNext(next Shop) {
 	this.Next = &next
 }
 
-func (this Shop) SetPrevious(previous Shop) {
+func (this *Shop) SetPrevious(previous Shop) {
 	this.Previous = &previous
 }
 
