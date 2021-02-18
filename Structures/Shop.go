@@ -1,12 +1,41 @@
 package Structures
 
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+)
+
 type Shop struct {
-	Name        string  `json:"Nombre"`
-	Description string  `json:"Descripcion"`
-	Contact     string  `json:"Contacto"`
-	Score       float32 `json:"Calificacion"`
+	Name        string `json:"Nombre"`
+	Description string `json:"Descripcion"`
+	Contact     string `json:"Contacto"`
+	Score       int    `json:"Calificacion"`
+	Previous    *Shop  `json:"-"`
+	Next        *Shop  `json:"-"`
+	Node        `json:"-"`
 }
 
-func (this Shop) GetName() string {
-	return this.Name
+func (this Shop) ToString() string {
+	return "Nombre: " + this.Name + "\nDescripcion: " + this.Description + "\nContacto: " + this.Contact + "\nPunteo: " + fmt.Sprintf("%f", this.Score)
+}
+
+func (this *Shop) SetNext(next Shop) {
+	this.Next = &next
+}
+
+func (this Shop) SetPrevious(previous Shop) {
+	this.Previous = &previous
+}
+
+func (this Shop) ToJSON() {
+	/*json, _ := json.Marshal(this)
+	sjson := string(json)
+
+	fmt.Println(sjson)
+	creator := ioutil.WriteFile("big_marhsall.json", jsonString, os.ModePerm)*/
+
+	file, _ := json.MarshalIndent(this, "", "\t")
+
+	_ = ioutil.WriteFile("BusquedaPosicionEspecifica.json", file, 0644)
 }
