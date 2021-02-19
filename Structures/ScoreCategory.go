@@ -58,9 +58,7 @@ func (this *ScoreCategory) Delete(name string, score int) bool {
 	}
 
 	if shop.Score == score && shop.Name == name {
-		fmt.Println(this.first)
 		this.first = this.first.Next
-		fmt.Println(this.first)
 		this.lenght--
 		return true
 	} else if this.last.Score == score && this.last.Name == name {
@@ -72,12 +70,9 @@ func (this *ScoreCategory) Delete(name string, score int) bool {
 	} else {
 		for shop != nil {
 			if shop.Score == score && shop.Name == name {
-				fmt.Println(shop.Next)
-				fmt.Println(shop.Previous)
 				shop.Previous.SetNext(*shop.Next)
 				shop.Next.SetPrevious(*shop.Previous)
 				shop = nil
-				//fmt.Println("Entró aqui tambien")
 				this.lenght--
 				return true
 			}

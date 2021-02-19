@@ -3,6 +3,7 @@ package Structures
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	//"Structures"
 )
 
@@ -16,23 +17,22 @@ func (this *Search) ReadJson(text []byte) {
 	json.Unmarshal(text, &this)
 }
 
-func (this Search) EspecificSearchEngine(array [100]ScoreCategory) {
+func (this Search) EspecificSearchEngine(array [100]ScoreCategory) string {
 
 	for i := 0; i < len(array); i++ {
 		if this.Departament == array[i].Departament {
 			object, null := array[i].Search(this.Name, this.Score)
 
 			if null {
-				object.ToJSON()
-				return
+				return object.ToJSON()
 			}
 		}
 	}
 
-	fmt.Println("No se encontró ninguna tienda con dichos parametros")
+	return "No se encontró ninguna tienda con dichos parametros"
 }
 
-func (this Search) Delete(array *[100]ScoreCategory) {
+func (this Search) Delete(array *[100]ScoreCategory, w http.ResponseWriter) {
 
 	for i := 0; i < len(array); i++ {
 		if this.Departament == array[i].Departament {
@@ -40,11 +40,11 @@ func (this Search) Delete(array *[100]ScoreCategory) {
 			fmt.Println(deleted)
 			fmt.Println(array[i].first)
 			if deleted {
-				fmt.Println("Eliminado correctamente")
+				fmt.Fprintf(w, "Eliminado correctamente")
 				return
 			}
 		}
 	}
 
-	fmt.Println("=========== No se encontró ninguna tienda con dichos parametros")
+	fmt.Fprintf(w, "=========== No se encontró ninguna tienda con dichos parametros")
 }
