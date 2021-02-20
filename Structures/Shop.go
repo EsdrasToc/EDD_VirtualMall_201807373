@@ -2,7 +2,6 @@ package Structures
 
 import (
 	"encoding/json"
-	"io/ioutil"
 )
 
 type Shop struct {
@@ -28,15 +27,10 @@ func (this *Shop) SetPrevious(previous Shop) {
 }
 
 func (this Shop) ToJSON() string {
-	/*json, _ := json.Marshal(this)
-	sjson := string(json)
-
-	fmt.Println(sjson)
-	creator := ioutil.WriteFile("big_marhsall.json", jsonString, os.ModePerm)*/
 
 	file, _ := json.MarshalIndent(this, "", "\t")
 
-	_ = ioutil.WriteFile("BusquedaPosicionEspecifica.json", file, 0644)
+	//_ = ioutil.WriteFile("BusquedaPosicionEspecifica.json", file, 0644)
 
 	return string(file)
 }

@@ -19,10 +19,11 @@ func New() Server {
 
 	r := mux.NewRouter().StrictSlash(true)
 
-	r.HandleFunc("/{ID:[0-9]+}", HolaMundoNumber)
 	r.HandleFunc("/cargartienda", UploadShops).Methods("POST")
 	r.HandleFunc("/TiendaEspecifica", EspecificShop).Methods("POST")
 	r.HandleFunc("/Eliminar", Delete).Methods("DELETE")
+	r.HandleFunc("/id/{ID:[0-9]+}", SearchPosition).Methods("GET")
+	r.HandleFunc("/prueba", ShowData).Methods("Get")
 
 	a.router = r
 	return a

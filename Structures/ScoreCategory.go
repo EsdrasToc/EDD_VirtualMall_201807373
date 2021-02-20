@@ -8,7 +8,7 @@ type ScoreCategory struct {
 	Index       string
 	Departament string
 	score       int
-	lenght      int
+	Lenght      int
 }
 
 func (this *ScoreCategory) Add(new Shop) {
@@ -25,7 +25,7 @@ func (this *ScoreCategory) Add(new Shop) {
 		this.last = &new
 	}
 
-	this.lenght++
+	this.Lenght++
 }
 
 func (this *ScoreCategory) Search(name string, score int) (Shop, bool) {
@@ -53,19 +53,18 @@ func (this *ScoreCategory) Delete(name string, score int) bool {
 	shop := this.first
 
 	if this.first == nil {
-		//fmt.Println("Entró aqui")
 		return false
 	}
 
 	if shop.Score == score && shop.Name == name {
 		this.first = this.first.Next
-		this.lenght--
+		this.Lenght--
 		return true
 	} else if this.last.Score == score && this.last.Name == name {
 		fmt.Println(" o Entro aqui")
 		this.last = this.last.Previous
 		this.last.Next = nil
-		this.lenght--
+		this.Lenght--
 		return true
 	} else {
 		for shop != nil {
@@ -73,7 +72,7 @@ func (this *ScoreCategory) Delete(name string, score int) bool {
 				shop.Previous.SetNext(*shop.Next)
 				shop.Next.SetPrevious(*shop.Previous)
 				shop = nil
-				this.lenght--
+				this.Lenght--
 				return true
 			}
 			shop = shop.Next
@@ -81,4 +80,47 @@ func (this *ScoreCategory) Delete(name string, score int) bool {
 	}
 
 	return false
+}
+
+func (this *ScoreCategory) Order() {
+	var i, j *Shop
+	i = this.first
+	for i.Next != nil {
+		j = i.Next
+		for j != nil {
+			if i.Name > j.Name {
+				Swap(i, j)
+			}
+			j = j.Next
+		}
+		i = i.Next
+	}
+}
+
+func Swap(a *Shop, b *Shop) {
+	var aux *Shop
+
+	aux = a
+
+	a.Name = b.Name
+	a.Description = b.Description
+	a.Contact = b.Contact
+
+	b.Name = aux.Name
+	b.Description = aux.Description
+	b.Contact = aux.Contact
+}
+
+func (this ScoreCategory) ToJson() string {
+	aux := this.first
+	content := ""
+
+	for aux != nil {
+
+		content = content + aux.ToJSON()
+
+		aux = aux.Next
+	}
+
+	return ""
 }

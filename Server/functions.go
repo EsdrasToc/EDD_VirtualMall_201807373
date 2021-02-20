@@ -2,6 +2,7 @@ package Server
 
 import (
 	"fmt"
+	"strconv"
 
 	"io/ioutil"
 
@@ -15,17 +16,6 @@ import (
 var data Structures.Data
 var vectorData []Structures.ScoreCategory
 var finder Structures.Search
-
-func HolaMundoNumber(w http.ResponseWriter, r *http.Request) {
-	id, err := mux.Vars(r)["ID"]
-
-	if !err {
-		fmt.Println("Ocurrio un error, chale")
-		return
-	}
-
-	fmt.Fprintf(w, "Hola mundo, este es mi primer server con Go: "+string(id))
-}
 
 func UploadShops(w http.ResponseWriter, r *http.Request) {
 	body, _ := ioutil.ReadAll(r.Body)
@@ -43,4 +33,21 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 	body, _ := ioutil.ReadAll(r.Body)
 	finder.ReadJson(body)
 	vectorData = *finder.Delete(vectorData, w)
+}
+
+func SearchPosition(w http.ResponseWriter, r *http.Request) {
+	x, err := mux.Vars(r)["ID"]
+	id, _ := strconv.Atoi(x)
+
+	if err && id <= len(vectorData) {
+		fmt.Fprintln(w, vectorData[id-1].ToJson())
+	}
+
+	fmt.Fprint(w, "La tienda con el indice solicitado, no existe")
+}
+
+func ShowData(w http.ResponseWriter, r *http.Request) {
+	for i := 0; i < len(vectorData); i++ {
+		fmt.Fprintln(w, vectorData[i].Departament)
+	}
 }
