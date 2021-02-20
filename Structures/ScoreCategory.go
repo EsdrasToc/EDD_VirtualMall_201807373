@@ -1,7 +1,6 @@
 package Structures
 
 import (
-	"fmt"
 	"strconv"
 )
 
@@ -64,7 +63,6 @@ func (this *ScoreCategory) Delete(name string, score int) bool {
 		this.Lenght--
 		return true
 	} else if this.last.Score == score && this.last.Name == name {
-		fmt.Println(" o Entro aqui")
 		this.last = this.last.Previous
 		this.last.Next = nil
 		this.Lenght--
@@ -136,8 +134,6 @@ func (this ScoreCategory) ToGraph(i *int) (string, string) {
 		*i++
 		if aux == this.first {
 			content = content + "node" + strconv.Itoa(*i) + "[label=\"" + aux.Name + "\"]\n"
-			//edges = edges + "node" + strconv.Itoa(*i-1) + "->" + "node" + strconv.Itoa(*i-1) + "\n"
-			fmt.Println("node" + strconv.Itoa(*i-1) + "->" + "node" + strconv.Itoa(*i-1) + "\n")
 		} else {
 			content = content + "node" + strconv.Itoa(*i) + "[label=\"" + aux.Name + "\"]\n"
 			edges = edges + "node" + strconv.Itoa(*i) + "->" + "node" + strconv.Itoa(*i-1) + "\n"

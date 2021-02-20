@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	//"Structures"
 )
 
 type Search struct {
@@ -37,8 +36,6 @@ func (this Search) Delete(array []ScoreCategory, w http.ResponseWriter) *[]Score
 	for i := 0; i < len(array); i++ {
 		if this.Departament == array[i].Departament {
 			deleted := array[i].Delete(this.Name, this.Score)
-			fmt.Println(deleted)
-			fmt.Println(array[i].first)
 			if deleted {
 				fmt.Fprintf(w, "Eliminado correctamente")
 				return &array
@@ -46,6 +43,6 @@ func (this Search) Delete(array []ScoreCategory, w http.ResponseWriter) *[]Score
 		}
 	}
 
-	fmt.Fprintf(w, "=========== No se encontró ninguna tienda con dichos parametros")
+	fmt.Fprintf(w, "No se encontró ninguna tienda con dichos parametros")
 	return &array
 }

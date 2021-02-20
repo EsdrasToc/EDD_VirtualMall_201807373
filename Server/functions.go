@@ -38,20 +38,12 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 func SearchPosition(w http.ResponseWriter, r *http.Request) {
 	x, err := mux.Vars(r)["ID"]
 	id, _ := strconv.Atoi(x)
-	fmt.Println(id)
-	fmt.Println(len(vectorData))
 	if err && id <= len(vectorData) {
 		fmt.Fprintln(w, vectorData[id-1].ToJson())
 		return
 	}
 
 	fmt.Fprint(w, "La tienda con el indice solicitado, no existe")
-}
-
-func ShowData(w http.ResponseWriter, r *http.Request) {
-	for i := 0; i < len(vectorData); i++ {
-		fmt.Fprintln(w, vectorData[i].Departament)
-	}
 }
 
 func Graph(w http.ResponseWriter, r *http.Request) {
@@ -70,11 +62,7 @@ func Graph(w http.ResponseWriter, r *http.Request) {
 		edges = edges + "node" + strconv.Itoa(counter) + "->node" + strconv.Itoa(counter+1) + "\n"
 
 		aux = counter
-		//counter++
 		auxContent, auxEdges = vectorData[i].ToGraph(&counter)
-
-		//fmt.Fprintln(w, aux)
-		//fmt.Fprintln(w, counter)
 
 		content = content + auxContent
 		edges = edges + auxEdges
@@ -83,4 +71,10 @@ func Graph(w http.ResponseWriter, r *http.Request) {
 	product = "Digraph G{\nrankdir=\"LR\"\n" + content + "\n\n" + edges + "}"
 
 	fmt.Fprintln(w, product)
+}
+
+func Save(w http.ResponseWriter, r *http.Request) {
+	var dataAux Structures.Data
+
+	fmt.Fprintln(w, dataAux.ToJson(vectorData))
 }
