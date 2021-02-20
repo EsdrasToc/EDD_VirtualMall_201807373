@@ -23,7 +23,8 @@ func New() Server {
 	r.HandleFunc("/TiendaEspecifica", EspecificShop).Methods("POST")
 	r.HandleFunc("/Eliminar", Delete).Methods("DELETE")
 	r.HandleFunc("/id/{ID:[0-9]+}", SearchPosition).Methods("GET")
-	r.HandleFunc("/prueba", ShowData).Methods("Get")
+	r.HandleFunc("/prueba", ShowData).Methods("GET")
+	r.HandleFunc("/getArreglo", Graph).Methods("GET")
 
 	a.router = r
 	return a

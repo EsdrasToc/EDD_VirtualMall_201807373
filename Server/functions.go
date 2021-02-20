@@ -51,3 +51,34 @@ func ShowData(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, vectorData[i].Departament)
 	}
 }
+
+func Graph(w http.ResponseWriter, r *http.Request) {
+	var counter, aux int
+	var content, edges, auxContent, auxEdges, product string
+	counter = 0
+	for i := 0; i < len(vectorData); i++ {
+		if i == 0 {
+			content = content + "node" + strconv.Itoa(counter) + "[label=\"" + vectorData[i].Index + " " + vectorData[i].Departament + "\"]\n"
+		} else {
+			content = content + "node" + strconv.Itoa(counter) + "[label=\"" + vectorData[i].Index + " " + vectorData[i].Departament + " " + strconv.Itoa(vectorData[i].Score) + "\"]\n"
+			if vectorData[i-1].Lenght != 0 {
+				edges = edges + "node" + strconv.Itoa(aux) + "->node" + strconv.Itoa(counter) + "\n"
+			}
+		}
+		edges = edges + "node" + strconv.Itoa(counter) + "->node" + strconv.Itoa(counter+1) + "\n"
+
+		aux = counter
+		//counter++
+		auxContent, auxEdges = vectorData[i].ToGraph(&counter)
+
+		//fmt.Fprintln(w, aux)
+		//fmt.Fprintln(w, counter)
+
+		content = content + auxContent
+		edges = edges + auxEdges
+		counter++
+	}
+	product = "Digraph G{\nrankdir=\"LR\"\n" + content + "\n\n" + edges + "}"
+
+	fmt.Fprintln(w, product)
+}

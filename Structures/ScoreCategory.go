@@ -1,13 +1,16 @@
 package Structures
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 type ScoreCategory struct {
 	first       *Shop
 	last        *Shop
 	Index       string
 	Departament string
-	score       int
+	Score       int
 	Lenght      int
 }
 
@@ -123,4 +126,25 @@ func (this ScoreCategory) ToJson() string {
 	}
 
 	return ""
+}
+
+func (this ScoreCategory) ToGraph(i *int) (string, string) {
+	aux := this.first
+	content := ""
+	edges := ""
+	for aux != nil {
+		*i++
+		if aux == this.first {
+			content = content + "node" + strconv.Itoa(*i) + "[label=\"" + aux.Name + "\"]\n"
+			//edges = edges + "node" + strconv.Itoa(*i-1) + "->" + "node" + strconv.Itoa(*i-1) + "\n"
+			fmt.Println("node" + strconv.Itoa(*i-1) + "->" + "node" + strconv.Itoa(*i-1) + "\n")
+		} else {
+			content = content + "node" + strconv.Itoa(*i) + "[label=\"" + aux.Name + "\"]\n"
+			edges = edges + "node" + strconv.Itoa(*i) + "->" + "node" + strconv.Itoa(*i-1) + "\n"
+			edges = edges + "node" + strconv.Itoa(*i-1) + "->" + "node" + strconv.Itoa(*i) + "\n"
+		}
+		aux = aux.Next
+	}
+
+	return content, edges
 }

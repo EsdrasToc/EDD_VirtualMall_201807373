@@ -33,11 +33,11 @@ func (this *Data) ReadJson(text []byte) []ScoreCategory {
 			aux[pos+3].Index = this.Cells[i].Index
 			aux[pos+4].Index = this.Cells[i].Index
 
-			aux[pos].score = 1
-			aux[pos+1].score = 2
-			aux[pos+2].score = 3
-			aux[pos+3].score = 4
-			aux[pos+4].score = 5
+			aux[pos].Score = 1
+			aux[pos+1].Score = 2
+			aux[pos+2].Score = 3
+			aux[pos+3].Score = 4
+			aux[pos+4].Score = 5
 
 			pos += 5
 
