@@ -2,6 +2,7 @@ package Structures
 
 import (
 	"encoding/json"
+	"io/ioutil"
 )
 
 type Shop struct {
@@ -30,7 +31,7 @@ func (this Shop) ToJSON() string {
 
 	file, _ := json.MarshalIndent(this, "", "\t")
 
-	//_ = ioutil.WriteFile("BusquedaPosicionEspecifica.json", file, 0644)
+	_ = ioutil.WriteFile("BusquedaPosicionEspecifica.json", file, 0644)
 
 	return string(file)
 }

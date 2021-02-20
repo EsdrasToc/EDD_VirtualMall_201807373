@@ -38,9 +38,11 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 func SearchPosition(w http.ResponseWriter, r *http.Request) {
 	x, err := mux.Vars(r)["ID"]
 	id, _ := strconv.Atoi(x)
-
+	fmt.Println(id)
+	fmt.Println(len(vectorData))
 	if err && id <= len(vectorData) {
 		fmt.Fprintln(w, vectorData[id-1].ToJson())
+		return
 	}
 
 	fmt.Fprint(w, "La tienda con el indice solicitado, no existe")

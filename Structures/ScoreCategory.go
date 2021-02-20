@@ -120,12 +120,12 @@ func (this ScoreCategory) ToJson() string {
 
 	for aux != nil {
 
-		content = content + aux.ToJSON()
+		content = content + aux.ToJSON() + "\n"
 
 		aux = aux.Next
 	}
 
-	return ""
+	return content
 }
 
 func (this ScoreCategory) ToGraph(i *int) (string, string) {
