@@ -17,7 +17,7 @@ func (this *Search) ReadJson(text []byte) {
 	json.Unmarshal(text, &this)
 }
 
-func (this Search) EspecificSearchEngine(array [100]ScoreCategory) string {
+func (this Search) EspecificSearchEngine(array []ScoreCategory) string {
 
 	for i := 0; i < len(array); i++ {
 		if this.Departament == array[i].Departament {
@@ -32,7 +32,7 @@ func (this Search) EspecificSearchEngine(array [100]ScoreCategory) string {
 	return "No se encontró ninguna tienda con dichos parametros"
 }
 
-func (this Search) Delete(array *[100]ScoreCategory, w http.ResponseWriter) {
+func (this Search) Delete(array []ScoreCategory, w http.ResponseWriter) *[]ScoreCategory {
 
 	for i := 0; i < len(array); i++ {
 		if this.Departament == array[i].Departament {
@@ -41,10 +41,11 @@ func (this Search) Delete(array *[100]ScoreCategory, w http.ResponseWriter) {
 			fmt.Println(array[i].first)
 			if deleted {
 				fmt.Fprintf(w, "Eliminado correctamente")
-				return
+				return &array
 			}
 		}
 	}
 
 	fmt.Fprintf(w, "=========== No se encontró ninguna tienda con dichos parametros")
+	return &array
 }

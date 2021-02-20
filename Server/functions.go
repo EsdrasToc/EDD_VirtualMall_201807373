@@ -13,7 +13,7 @@ import (
 )
 
 var data Structures.Data
-var vectorData [100]Structures.ScoreCategory
+var vectorData []Structures.ScoreCategory
 var finder Structures.Search
 
 func HolaMundoNumber(w http.ResponseWriter, r *http.Request) {
@@ -42,5 +42,5 @@ func EspecificShop(w http.ResponseWriter, r *http.Request) {
 func Delete(w http.ResponseWriter, r *http.Request) {
 	body, _ := ioutil.ReadAll(r.Body)
 	finder.ReadJson(body)
-	finder.Delete(&vectorData, w)
+	vectorData = *finder.Delete(vectorData, w)
 }
