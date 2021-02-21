@@ -2,6 +2,7 @@ package Structures
 
 import (
 	"encoding/json"
+	"io/ioutil"
 )
 
 type Data struct {
@@ -102,6 +103,6 @@ func (this *Data) ToJson(array []ScoreCategory) string {
 	}
 
 	json, _ := json.MarshalIndent(this, "", "\t")
-
+	_ = ioutil.WriteFile("DatosGuardados.json", json, 0644)
 	return string(json)
 }

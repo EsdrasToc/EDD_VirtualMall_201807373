@@ -2,6 +2,9 @@ package Server
 
 import (
 	"fmt"
+	"log"
+	"os"
+	"os/exec"
 	"strconv"
 
 	"io/ioutil"
@@ -71,6 +74,16 @@ func Graph(w http.ResponseWriter, r *http.Request) {
 	product = "Digraph G{\nrankdir=\"LR\"\n" + content + "\n\n" + edges + "}"
 
 	fmt.Fprintln(w, product)
+
+	data := []byte(product)
+	err := ioutil.WriteFile("VectorDeListas.dot", data, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	path, _ := exec.LookPath("dot")
+	cmd, _ := exec.Command(path, "-Tpng", "VectorDeListas.dot").Output()
+	mode := int(0777)
+	ioutil.WriteFile("VectorDeListas.png", cmd, os.FileMode(mode))
 }
 
 func Save(w http.ResponseWriter, r *http.Request) {
