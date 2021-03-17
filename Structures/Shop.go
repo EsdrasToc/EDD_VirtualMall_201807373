@@ -6,12 +6,14 @@ import (
 )
 
 type Shop struct {
-	Name        string `json:"Nombre"`
-	Description string `json:"Descripcion"`
-	Contact     string `json:"Contacto"`
-	Score       int    `json:"Calificacion"`
-	Previous    *Shop  `json:"-"`
-	Next        *Shop  `json:"-"`
+	Name        string   `json:"Nombre"`
+	Description string   `json:"Descripcion"`
+	Contact     string   `json:"Contacto"`
+	Score       int      `json:"Calificacion"`
+	Logo        string   `json:"Logo"`
+	Inventory   *AVLTree `json:"-"`
+	Previous    *Shop    `json:"-"`
+	Next        *Shop    `json:"-"`
 	Node        `json:"-"`
 }
 
