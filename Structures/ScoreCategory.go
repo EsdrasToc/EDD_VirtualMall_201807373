@@ -1,6 +1,7 @@
 package Structures
 
 import (
+	"fmt"
 	"strconv"
 )
 
@@ -30,17 +31,17 @@ func (this *ScoreCategory) Add(new Shop) {
 	this.Lenght++
 }
 
-func (this *ScoreCategory) Search(name string, score int) (Shop, bool) {
+func (this *ScoreCategory) Search(name string, score int) (*Shop, bool) {
 	cicle := true
 	shop := this.first
 
 	if this.first == nil {
-		return Shop{}, false
+		return &Shop{}, false
 	}
 	for cicle {
 		if shop != nil {
 			if shop.Score == score && shop.Name == name {
-				return *shop, true
+				return shop, true
 			} else {
 				shop = shop.Next
 			}
@@ -48,7 +49,7 @@ func (this *ScoreCategory) Search(name string, score int) (Shop, bool) {
 			break
 		}
 	}
-	return Shop{}, false
+	return &Shop{}, false
 }
 
 func (this *ScoreCategory) Delete(name string, score int) bool {
@@ -143,4 +144,23 @@ func (this ScoreCategory) ToGraph(i *int) (string, string) {
 	}
 
 	return content, edges
+}
+
+func (this ScoreCategory) PrintInv() {
+	cicle := true
+	shop := this.first
+
+	if this.first == nil {
+		return
+	}
+	for cicle {
+		if shop != nil {
+			fmt.Println("TIENDA: " + shop.Name)
+			inorden(shop.Inventory)
+			shop = shop.Next
+		} else {
+			break
+		}
+	}
+	return
 }

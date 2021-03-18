@@ -2,6 +2,7 @@ package Structures
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 )
 
@@ -11,7 +12,7 @@ type Shop struct {
 	Contact     string   `json:"Contacto"`
 	Score       int      `json:"Calificacion"`
 	Logo        string   `json:"Logo"`
-	Inventory   *AVLTree `json:"-"`
+	Inventory   *Product `json:"-"`
 	Previous    *Shop    `json:"-"`
 	Next        *Shop    `json:"-"`
 	Node        `json:"-"`
@@ -36,4 +37,21 @@ func (this Shop) ToJSON() string {
 	_ = ioutil.WriteFile("BusquedaPosicionEspecifica.json", file, 0644)
 
 	return string(file)
+}
+
+func (this *Shop) AddProducts(products []Product) {
+	//aux := Product{}
+	fmt.Println(len(products))
+	for i := 0; i < len(products); i++ {
+		/*if this.Inventory == nil {
+			fmt.Println("ALJKSDFLKJASHDF")
+			fmt.Println("Producto: ")
+			fmt.Println(products[i])
+			this.Inventory = &products[i]
+		} else {*/
+		fmt.Println("Producto: ")
+		fmt.Println(products[i])
+		this.Inventory = this.Inventory.Insert(products[i])
+
+	}
 }

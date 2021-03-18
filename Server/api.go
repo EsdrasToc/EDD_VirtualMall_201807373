@@ -25,6 +25,7 @@ func New() Server {
 	r.HandleFunc("/id/{ID:[0-9]+}", SearchPosition).Methods("GET")
 	r.HandleFunc("/getArreglo", Graph).Methods("GET")
 	r.HandleFunc("/guardar", Save).Methods("GET")
+	r.HandleFunc("/AddInventory", AddInventory).Methods("POST")
 
 	a.router = r
 	return a

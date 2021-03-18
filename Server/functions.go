@@ -91,3 +91,17 @@ func Save(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintln(w, dataAux.ToJson(vectorData))
 }
+
+func AddInventory(w http.ResponseWriter, r *http.Request) {
+	body, _ := ioutil.ReadAll(r.Body)
+
+	var inventory Structures.Inventory
+
+	vectorData = inventory.ReadJson(body, vectorData)
+
+	for i := 0; i < len(vectorData); i++ {
+		vectorData[i].PrintInv()
+	}
+
+	fmt.Fprintln(w, "Se han añadido los productos correctamente")
+}
