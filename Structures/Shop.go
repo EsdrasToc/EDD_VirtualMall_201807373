@@ -39,6 +39,13 @@ func (this Shop) ToJSON() string {
 	return string(file)
 }
 
+func (this Shop) ToJSONRequest() string {
+
+	file, _ := json.MarshalIndent(this, "", "\t")
+
+	return string(file)
+}
+
 func (this *Shop) AddProducts(products []Product) {
 	//aux := Product{}
 	fmt.Println(len(products))

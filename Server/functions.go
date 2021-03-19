@@ -14,6 +14,8 @@ import (
 	"../Structures"
 
 	"github.com/gorilla/mux"
+
+	"strings"
 )
 
 var data Structures.Data
@@ -104,4 +106,17 @@ func AddInventory(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintln(w, "Se han añadido los productos correctamente")
+}
+
+func getShops(w http.ResponseWriter, r *http.Request) {
+	var shops string
+	for i := 0; i < len(vectorData); i++ {
+		shops = shops + vectorData[i].ToJson()
+	}
+
+	fmt.Println(len(shops))
+
+	shops = "[\n" + strings.TrimSuffix(shops, ",\n") + "]"
+
+	fmt.Fprintln(w, shops)
 }

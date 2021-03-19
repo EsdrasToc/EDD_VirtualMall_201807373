@@ -119,7 +119,7 @@ func (this ScoreCategory) ToJson() string {
 
 	for aux != nil {
 
-		content = content + aux.ToJSON() + "\n"
+		content = content + aux.ToJSONRequest() + ",\n"
 
 		aux = aux.Next
 	}

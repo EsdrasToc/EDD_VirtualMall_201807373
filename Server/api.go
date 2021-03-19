@@ -1,8 +1,10 @@
 package Server
 
 import (
+	"log"
 	"net/http"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -19,6 +21,10 @@ func New() Server {
 
 	r := mux.NewRouter().StrictSlash(true)
 
+	//w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	//log.Fatal(http.ListenAndServe(":3000", handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"}), handlers.AllowedOrigins([]string{"*"}))(r)))
+
 	r.HandleFunc("/cargartienda", UploadShops).Methods("POST")
 	r.HandleFunc("/TiendaEspecifica", EspecificShop).Methods("POST")
 	r.HandleFunc("/Eliminar", Delete).Methods("DELETE")
@@ -26,6 +32,9 @@ func New() Server {
 	r.HandleFunc("/getArreglo", Graph).Methods("GET")
 	r.HandleFunc("/guardar", Save).Methods("GET")
 	r.HandleFunc("/AddInventory", AddInventory).Methods("POST")
+	r.HandleFunc("/getshops", getShops).Methods("GET")
+
+	log.Fatal(http.ListenAndServe(":3000", handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"}), handlers.AllowedOrigins([]string{"*"}))(r)))
 
 	a.router = r
 	return a
