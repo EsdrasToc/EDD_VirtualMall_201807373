@@ -120,3 +120,26 @@ func getShops(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintln(w, shops)
 }
+
+func getProducts(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("HOLAAAAA")
+	name, err := mux.Vars(r)["Name"]
+	x, err := mux.Vars(r)["Score"]
+	score, _ := strconv.Atoi(x)
+
+	var shop *Structures.Shop
+	var find bool
+
+	products := "[]"
+	if err {
+		for i := 0; i < len(vectorData); i++ {
+			shop, find = vectorData[i].Search(name, score)
+			if find {
+				products = "[" + shop.GetProducts() + "]"
+				break
+			}
+		}
+	}
+
+	fmt.Fprintln(w, products)
+}

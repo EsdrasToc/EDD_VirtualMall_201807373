@@ -1,0 +1,14 @@
+<div class="card-header">
+    <h4 class="my-0 fw-normal">{{ nombre }}</h4>
+  </div>
+  <div class="card-body">
+    <img src="{{ imagen }}" class="img-thumbnail" >
+    <ul class="list-unstyled mt-3 mb-4">
+        <li>Q {{ precio }}</li>
+        <li>Codigo: {{ codigo }}</li>
+        <li>2 GB of storage</li>
+        <li>{{ descripcion }}</li>
+        <li><input type="number" max="{{ cantidad }}" min="0"></li>
+    </ul>
+    <button type="button" class="w-100 btn btn-lg btn-outline-primary">Comprar</button>
+  </div>

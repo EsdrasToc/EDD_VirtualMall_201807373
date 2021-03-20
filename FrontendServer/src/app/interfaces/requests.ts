@@ -8,3 +8,12 @@ export interface Shop{
 	Calificacion: Number;
 	Logo : String;
 }
+
+export interface Product{
+	Nombre:String;
+	Codigo:Number;
+	Descripcion:String;
+	Precio:Number;
+	Cantidad:Number;
+	Imagen:String;
+}

@@ -1,15 +1,9 @@
 package Structures
 
 import (
+	"encoding/json"
 	"fmt"
 )
-
-/*type AVLTreeNode struct { // Definir nodo
-	key   int          `json:"Codigo"`
-	high  int          `json:"-"`
-	left  *AVLTreeNode `json:"-"`
-	right *AVLTreeNode `json:"-"`
-}*/
 
 func (avl *Product) Insert(newNode Product) *Product { // Insertar valor
 	value := newNode.Code
@@ -125,4 +119,22 @@ type Product struct {
 	high        int      `json:"-"`
 	left        *Product `json:"-"`
 	right       *Product `json:"-"`
+}
+
+func (this *Product) ToJson() string {
+	file, _ := json.MarshalIndent(this, "", "\t")
+
+	return string(file)
+}
+
+func (this *Product) GetProducts() string {
+	if this.right == nil && this.left == nil {
+		return this.ToJson()
+	} else if this.right == nil {
+		return this.ToJson() + ",\n" + this.left.GetProducts()
+	} else if this.left == nil {
+		return this.ToJson() + ",\n" + this.right.GetProducts()
+	} else {
+		return this.ToJson() + ",\n" + this.right.GetProducts() + ",\n" + this.left.GetProducts()
+	}
 }

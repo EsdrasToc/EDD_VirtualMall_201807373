@@ -46,6 +46,10 @@ func (this Shop) ToJSONRequest() string {
 	return string(file)
 }
 
+func (this Shop) GetProducts() string {
+	return this.Inventory.GetProducts()
+}
+
 func (this *Shop) AddProducts(products []Product) {
 	//aux := Product{}
 	fmt.Println(len(products))

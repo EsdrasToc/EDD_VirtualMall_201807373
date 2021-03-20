@@ -1,13 +1,57 @@
-<div class="container">
-<div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-    <div *ngFor="let shop of shops" class="card mb-4 shadow-sm">
-        <div class="card-header">
-        <h4 class="my-0 fw-normal">{{ shop.Nombre }}</h4>
-        </div>
-        <div class="card-body">
-        <img src="{{ shop.Logo }}" class="img-thumbnail" >
-        <button type="button" class="w-100 btn btn-lg btn-outline-primary">Ingresar</button>
-        </div>
+<ul class="nav nav-tabs">
+					
+  <li class="nav-link"><a data-toggle="tab" href="#home">TIENDAS</a></li>
+
+  <li class="nav-link"><a data-toggle="tab" href="#menu1">PRODUCTOS</a></li>
+
+  <li class="nav-link"><a data-toggle="tab" href="#menu2">CARRITO</a></li>
+
+</ul>
+
+<div class="tab-content">
+
+  <div id="home" class="tab-pane fade in active"><!--TIENDAS-->
+    
+    <div class="container">
+      <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+          <div *ngFor="let shop of shops" class="card mb-4 shadow-sm">
+              <div class="card-header">
+              <h4 class="my-0 fw-normal">{{ shop.Nombre }}</h4>
+              </div>
+              <div class="card-body">
+              <img src="{{ shop.Logo }}" class="img-thumbnail" >
+              <button type="button" class="w-100 btn btn-lg btn-outline-primary" (click)="getProducts(shop.Nombre , shop.Calificacion)">Ingresar</button>
+              </div>
+          </div>
+      </div>
     </div>
+    
+  </div>
+
+  <div id="menu1" class="tab-pane fade"> <!--PRODUCTOS-->
+    
+    <div class="container">
+      <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+        <div *ngFor="let product of products" class="card mb-4 shadow-sm">
+          <app-productos [nombre]="product.Nombre" [codigo]="product.Codigo" [descripcion]="product.Descripcion" [precio]="product.Precio" [cantidad]="product.Cantidad" [imagen]="product.Imagen"></app-productos>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+  
+  <div id="menu2" class="tab-pane fade"> <!--CARRITO-->
+    
+    
+  
+  </div>
+
 </div>
-</div>
+
+<!--<app-productos [shop]='{{ shopName }}' [score]='{{ shopScore }}'></app-productos>-->
+  
+<!--<div id="menu1" class="tab-pane fade">
+  
+  <app-productos [shop]="shopName" [score]="shopScore" ></app-productos>
+
+</div>-->

@@ -33,6 +33,7 @@ func New() Server {
 	r.HandleFunc("/guardar", Save).Methods("GET")
 	r.HandleFunc("/AddInventory", AddInventory).Methods("POST")
 	r.HandleFunc("/getshops", getShops).Methods("GET")
+	r.HandleFunc("/getProducts/{Name:.+}/{Score:[1-9]}", getProducts).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":3000", handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"}), handlers.AllowedOrigins([]string{"*"}))(r)))
 
