@@ -17,3 +17,8 @@ export interface Product{
 	Cantidad:Number;
 	Imagen:String;
 }
+
+export interface CarProduct{
+	Tienda ?: Shop;
+	Producto ?: Product[];
+}

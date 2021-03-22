@@ -1,0 +1,22 @@
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Codigo</th>
+        <th scope="col">Imagen</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Cantidad</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngFor="let item of car">
+            <tr *ngFor="let product of item.Producto">
+                <th scope="row">{{ product.Codigo }}</th>
+                <td><img src="{{ product.Imagen }}" class="img-thumbnail" ></td>
+                <td>{{ product.Nombre }}</td>
+                <td>{{ product.Cantidad }}</td>
+                <td><button type="button" class="btn btn-outline-danger">Eliminar</button></td>
+            </tr>
+        </ng-container>
+    </tbody>
+  </table>
