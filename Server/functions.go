@@ -22,6 +22,7 @@ import (
 var data Structures.Data
 var vectorData []Structures.ScoreCategory
 var finder Structures.Search
+var yearOrder *Structures.Year
 
 func UploadShops(w http.ResponseWriter, r *http.Request) {
 	body, _ := ioutil.ReadAll(r.Body)
@@ -167,4 +168,53 @@ func putPurchase(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+}
+
+func addOrders(w http.ResponseWriter, r *http.Request) {
+	body, _ := ioutil.ReadAll(r.Body)
+	var orders Structures.Orders
+
+	json.Unmarshal(body, &orders)
+
+	fmt.Println(orders)
+
+	for i := 0; i < len(orders.Orders); i++ {
+		years := strings.Split(orders.Orders[i].Date, "-")
+		//primero buscamos si el año ya existe, de lo contrario lo agregamos
+		year, err := strconv.Atoi(years[2])
+		fmt.Println(year)
+		if err == nil {
+			anio := yearOrder.SearchYear(year)
+			if anio.Value != year {
+				yearOrder = yearOrder.Insert(Structures.Year{Value: year})
+				anio = yearOrder.SearchYear(year)
+			} else {
+				fmt.Println("El año ya existe")
+			}
+
+			//Ahora que ya existe, ingresamos el mes. Si y solo si aun no existe
+			month, err := strconv.Atoi(years[1])
+			if err == nil {
+				mes := anio.SearchMonth(month)
+
+				if mes.Value != month {
+					var newMonth Structures.Calendar
+					newMonth.Init(month)
+					anio.AddMonth(&newMonth)
+					mes = anio.SearchMonth(month)
+				} else {
+					fmt.Println("El mes ya existe")
+				}
+
+				//Ahora añadimos la orden al mes
+				day, err := strconv.Atoi(years[0])
+				if err == nil {
+					mes.AddOrder(orders.Orders[i].Departament, day, &orders.Orders[i])
+				}
+			}
+		}
+	}
+
+	Structures.YearInorden(yearOrder)
+	fmt.Fprintln(w, "Hola mundo")
 }

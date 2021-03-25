@@ -8,7 +8,6 @@ import (
 func (avl *Product) Insert(newNode Product) *Product { // Insertar valor
 	value := newNode.Code
 	if avl == nil { // Se inserta el nodo raíz
-		fmt.Println("ENTRO AQUI XD")
 		node := Product{
 			Code:        value,
 			Name:        newNode.Name,
@@ -21,7 +20,6 @@ func (avl *Product) Insert(newNode Product) *Product { // Insertar valor
 		avl.left = nil
 		avl.right = nil
 	} else if value < avl.Code { // Insertar en el subárbol izquierdo
-		fmt.Println("NEL ACA XD")
 		avl.left = avl.left.Insert(newNode)            // recorrer para encontrar la posición que se va a insertar
 		if avl.left.height()-avl.right.height() == 2 { // Juzgar el equilibrio
 			if value < avl.left.Code { // Izquierda Izquierda
@@ -31,7 +29,6 @@ func (avl *Product) Insert(newNode Product) *Product { // Insertar valor
 			}
 		}
 	} else if value > avl.Code { // Inserta el subárbol derecho
-		fmt.Println("NEL ACA JAJAJA XD")
 		avl.right = avl.right.Insert(newNode)
 		if avl.right.height()-avl.left.height() == 2 {
 			if value < avl.right.Code {
@@ -42,7 +39,6 @@ func (avl *Product) Insert(newNode Product) *Product { // Insertar valor
 			}
 		}
 	} else {
-		fmt.Println("the key", value, "has exists")
 		avl.Stock += newNode.Stock
 	}
 	avl.high = max1(avl.left.height(), avl.right.height()) + 1 // Actualizar altura
