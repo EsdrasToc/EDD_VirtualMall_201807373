@@ -218,3 +218,10 @@ func addOrders(w http.ResponseWriter, r *http.Request) {
 	Structures.YearInorden(yearOrder)
 	fmt.Fprintln(w, "Hola mundo")
 }
+
+func getYears(w http.ResponseWriter, r *http.Request) {
+	json := ""
+
+	json = "[" + yearOrder.ToJson() + "]"
+	fmt.Fprintln(w, json)
+}

@@ -2,18 +2,55 @@ package Structures
 
 import (
 	"fmt"
+	"strconv"
 )
 
 /*=================================*/
 /*   Inicia el arbol avl de años   */
 /*=================================*/
 type Year struct {
-	Value      int
-	FirstMonth *Calendar
-	LastMonth  *Calendar
-	left       *Year
-	right      *Year
-	high       int
+	Value      int       `json:"Anio"`
+	FirstMonth *Calendar `json:"-"`
+	LastMonth  *Calendar `json:"-"`
+	left       *Year     `json:"-"`
+	right      *Year     `json:"-"`
+	high       int       `json:"-"`
+}
+
+func (this *Year) ToJson() string {
+	/*if this.left == nil && this.right == nil {
+		json = "{\n Anio : " + string(this.Value) + ",\nMeses : [" + this.MonthsToJson() + "]\n"
+	}*/
+
+	if this == nil {
+		return ""
+	} else if this.right == nil && this.left == nil {
+		return "{\n \"Anio\" : " + strconv.Itoa(this.Value) + ",\n\"Meses\" : [" + this.MonthsToJson() + "]\n}\n"
+	} else if this.right == nil {
+		return "{\n \"Anio\" : " + strconv.Itoa(this.Value) + ",\n\"Meses\" : [" + this.MonthsToJson() + "]\n}" + ",\n" + this.left.ToJson()
+	} else if this.left == nil {
+		return "{\n \"Anio\" : " + strconv.Itoa(this.Value) + ",\n\"Meses\" : [" + this.MonthsToJson() + "]\n}" + ",\n" + this.right.ToJson()
+	} else {
+		return "{\n \"Anio\" : " + strconv.Itoa(this.Value) + ",\n\"Meses\" : [" + this.MonthsToJson() + "]\n}" + ",\n" + this.right.ToJson() + ",\n" + this.left.ToJson()
+	}
+}
+
+func (this *Year) MonthsToJson() string {
+	json := ""
+	aux := this.FirstMonth
+
+	if this.FirstMonth == nil {
+		return ""
+	}
+
+	for aux.Next != nil {
+		json = json + "{\n \"Mes\" : \"" + aux.Month + "\",\n\"Valor\" : " + strconv.Itoa(aux.Value) + "\n},\n"
+
+		aux = aux.Next
+	}
+	json = json + "{\n \"Mes\" : \"" + aux.Month + "\",\n\"Valor\" : " + strconv.Itoa(aux.Value) + "\n}"
+
+	return json
 }
 
 func (this *Year) ViewMonths() {
