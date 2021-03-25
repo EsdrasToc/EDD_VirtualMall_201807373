@@ -34,6 +34,7 @@ func New() Server {
 	r.HandleFunc("/AddInventory", AddInventory).Methods("POST")
 	r.HandleFunc("/getshops", getShops).Methods("GET")
 	r.HandleFunc("/getProducts/{Name:.+}/{Score:[1-9]}", getProducts).Methods("GET")
+	r.HandleFunc("/putPurchase", putPurchase).Methods("PUT")
 
 	log.Fatal(http.ListenAndServe(":3000", handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"}), handlers.AllowedOrigins([]string{"*"}))(r)))
 

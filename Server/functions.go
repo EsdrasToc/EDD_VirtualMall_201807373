@@ -1,6 +1,7 @@
 package Server
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -122,7 +123,6 @@ func getShops(w http.ResponseWriter, r *http.Request) {
 }
 
 func getProducts(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("HOLAAAAA")
 	name, err := mux.Vars(r)["Name"]
 	x, err := mux.Vars(r)["Score"]
 	score, _ := strconv.Atoi(x)
@@ -142,4 +142,29 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintln(w, products)
+}
+
+func putPurchase(w http.ResponseWriter, r *http.Request) {
+	body, _ := ioutil.ReadAll(r.Body)
+	//fmt.Println(string(body))
+	var find bool
+	var shop *Structures.Shop
+	var car []Structures.CarProduct
+
+	json.Unmarshal(body, &car)
+
+	fmt.Println(car)
+
+	for i := 0; i < len(car); i++ {
+		for j := 0; j < len(vectorData); j++ {
+			shop, find = vectorData[j].Search(car[i].Shop_.Name, car[i].Shop_.Score)
+			if find {
+				for k := 0; k < len(car[i].Products); k++ {
+					car[i].Products[k].Stock *= -1
+				}
+				shop.AddProducts(car[i].Products)
+			}
+		}
+	}
+
 }

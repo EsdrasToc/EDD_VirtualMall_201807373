@@ -7,7 +7,10 @@
         <li>Q {{ producto.Precio }}</li>
         <li>Codigo: {{ producto.Codigo }}</li>
         <li>{{ producto.Descripcion }}</li>
-        <li><input type="number" max="{{ producto.Cantidad }}" min="0"></li>
+        <li><input type="number" max="{{ producto.Cantidad }}" min="1" [(ngModel)]="cantidad" required></li>
     </ul>
-    <button type="button" class="w-100 btn btn-lg btn-outline-primary" (click)="addToCar()">Comprar</button>
+
+    <!--<ng-container *ngIf="{{ producto.Cantidad }}">-->
+      <button type="button" class="w-100 btn btn-lg btn-outline-primary" (click)="addToCar()">Comprar</button>
+    <!--</ng-container>-->
   </div>

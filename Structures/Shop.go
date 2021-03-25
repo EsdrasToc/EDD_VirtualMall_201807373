@@ -52,7 +52,6 @@ func (this Shop) GetProducts() string {
 
 func (this *Shop) AddProducts(products []Product) {
 	//aux := Product{}
-	fmt.Println(len(products))
 	for i := 0; i < len(products); i++ {
 		/*if this.Inventory == nil {
 			fmt.Println("ALJKSDFLKJASHDF")

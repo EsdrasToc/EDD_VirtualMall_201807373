@@ -128,7 +128,9 @@ func (this *Product) ToJson() string {
 }
 
 func (this *Product) GetProducts() string {
-	if this.right == nil && this.left == nil {
+	if this == nil {
+		return ""
+	} else if this.right == nil && this.left == nil {
 		return this.ToJson()
 	} else if this.right == nil {
 		return this.ToJson() + ",\n" + this.left.GetProducts()

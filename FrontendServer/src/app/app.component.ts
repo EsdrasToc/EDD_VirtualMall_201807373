@@ -25,6 +25,7 @@ export class AppComponent implements OnInit{
 
   ngOnInit(){
     this.requestService.getShops().subscribe(data => {
+      console.log(data);
       this.shops = data;
     });
     /*this.requestService.getProducts("Samsung", 3).subscribe(data => {
@@ -54,27 +55,83 @@ export class AppComponent implements OnInit{
     if(this.car.length != 0){
       var find = false;
       for (let i = 0; i < this.car.length; i++) {
-        if(this.car[i].Tienda == this.currentShop){
-          this.car[i].Producto?.push($event);
+        if(this.car[i].Tienda?.Calificacion == this.currentShop.Calificacion && this.car[i].Tienda?.Nombre == this.currentShop.Nombre){
+          console.log("Ya entre");
+          this.car[i].Producto?.push({
+            Nombre : $event.Nombre,
+            Codigo : $event.Codigo,
+            Descripcion : $event.Descripcion,
+            Precio : $event.Precio,
+            Cantidad : $event.Cantidad,
+	          Imagen : $event.Imagen
+          });
           find = true;
           break;
         }
       }
 
       if(!find){
-        this.tempProduct.Producto = [];
+        /*this.tempProduct.Producto = [];
         this.tempProduct.Producto.push($event);
         this.tempProduct.Tienda = this.currentShop;
-        this.car.push(this.tempProduct);
+        this.car.push(this.tempProduct);*/
+        this.car.push(
+          {
+            Tienda : {
+              Nombre : this.currentShop.Nombre,
+              Descripcion : this.currentShop.Descripcion,
+              Contacto : this.currentShop.Contacto,
+              Calificacion: this.currentShop.Calificacion,
+              Logo : this.currentShop.Logo
+            },
+            Producto : [
+              {
+                Nombre : $event.Nombre,
+                Codigo : $event.Codigo,
+                Descripcion : $event.Descripcion,
+                Precio : $event.Precio,
+                Cantidad : $event.Cantidad,
+                Imagen : $event.Imagen
+              }
+            ]
+          }
+        );
       }
     }else{
-      console.log("Hola mundo");
-      this.tempProduct.Producto = [];
+      /*this.tempProduct.Producto = [];
       this.tempProduct.Producto.push($event);
       this.tempProduct.Tienda = this.currentShop;
-      this.car.push(this.tempProduct);
+      this.car.push(this.tempProduct);*/
+
+      this.car.push(
+        {
+          Tienda : {
+            Nombre : this.currentShop.Nombre,
+            Descripcion : this.currentShop.Descripcion,
+            Contacto : this.currentShop.Contacto,
+            Calificacion: this.currentShop.Calificacion,
+            Logo : this.currentShop.Logo
+          },
+          Producto : [
+            {
+              Nombre : $event.Nombre,
+              Codigo : $event.Codigo,
+              Descripcion : $event.Descripcion,
+              Precio : $event.Precio,
+              Cantidad : $event.Cantidad,
+              Imagen : $event.Imagen
+            }
+          ]
+        }
+      );
     }
 
     console.log(this.car);
+  }
+
+  Buy(){
+    console.log("HOLA MUNDO");
+    console.log(this.car);
+    this.requestService.putPurchase(this.car).subscribe();
   }
 }
