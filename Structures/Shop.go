@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"strconv"
 )
 
 type Shop struct {
@@ -19,7 +20,7 @@ type Shop struct {
 }
 
 func (this Shop) ToString() string {
-	return "Nombre: " + this.Name + "\nDescripcion: " + this.Description + "\nContacto: " + this.Contact + "\nPunteo: " + string(this.Score)
+	return "Nombre: " + this.Name + "\nDescripcion: " + this.Description + "\nContacto: " + this.Contact + "\nPunteo: " + strconv.Itoa(this.Score)
 }
 
 func (this *Shop) SetNext(next Shop) {
