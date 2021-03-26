@@ -1,0 +1,10 @@
+#general{
+    float: left;
+    width: 25%;
+    text-align: center;
+}
+
+#btn{
+    margin-top: 5px;
+    width: 100%;
+}

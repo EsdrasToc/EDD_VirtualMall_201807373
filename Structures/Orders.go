@@ -15,6 +15,141 @@ type Year struct {
 	left       *Year     `json:"-"`
 	right      *Year     `json:"-"`
 	high       int       `json:"-"`
+	Next       *Year     `json:"-"`
+	Previous   *Year     `json:"-"`
+}
+
+/*func (this *Year) AddYear(year int) *Year {
+	aux := this
+
+	if this == nil {
+		this = &Year{Value: year}
+		return this
+	}
+
+	newYear := &Year{Value: year}
+	for aux != nil {
+		fmt.Println(year)
+		fmt.Println(aux.Previous)
+		if aux == this && newYear.Value < this.Value {
+			newYear.Next = this
+			this.Next = nil
+			this.Previous = newYear
+			this = newYear
+			break
+		} else if aux.Next == nil {
+			aux.Next = newYear
+			newYear.Previous = aux
+			break
+		} else if aux.Previous.Value < newYear.Value && aux.Value > newYear.Value {
+			this.Previous.Next = newYear
+			newYear.Previous = this.Previous
+			newYear.Next = this
+			this.Previous = newYear
+			break
+		}
+
+		aux = aux.Next
+	}
+
+	return this
+}
+
+func (this *Year) SearchYear(year int) *Year {
+	aux := this
+
+	for aux != nil {
+		if aux.Value == year {
+			return aux
+		}
+
+		aux = aux.Next
+	}
+
+	return &Year{}
+}
+
+func (this *Year) GraphYears() string {
+	var nodes, lines string
+	aux := this
+
+	if this == nil {
+		return ""
+	} else if this.Next == nil {
+		return "digraph G{\n nodeA[label=\"" + strconv.Itoa(this.Value) + "\"]\n}"
+	}
+
+	for aux.Next != nil {
+		if aux == this {
+			lines = "\nnode" + strconv.Itoa(this.Value) + "->node" + strconv.Itoa(aux.Next.Value)
+		} else {
+			lines = "\nnode" + strconv.Itoa(this.Value) + "->node" + strconv.Itoa(aux.Next.Value)
+			lines = "\nnode" + strconv.Itoa(this.Value) + "->node" + strconv.Itoa(aux.Previous.Value)
+		}
+
+		nodes = nodes + "\nnode" + strconv.Itoa(this.Value) + "[label=\"" + strconv.Itoa(this.Value) + "\"]"
+
+		aux = aux.Next
+	}
+
+	nodes = nodes + "\nnode" + strconv.Itoa(this.Value) + "[label=\"" + strconv.Itoa(this.Value) + "\"]"
+	lines = "\nnode" + strconv.Itoa(this.Value) + "->node" + strconv.Itoa(aux.Previous.Value)
+
+	return "digraph G{\nrankdir=\"LR\"\n" + nodes + lines + "\n}"
+}*/
+
+func (this *Year) GraphMonths() string {
+	var lines, nodes string
+	aux := this.FirstMonth
+	nodes = "nodeAnio[label=\"" + strconv.Itoa(this.Value) + "\"]"
+
+	if aux.Next == nil {
+		return "digraph G{\nrankdir=\"LR\"\nnodeHola[label=\"" + aux.Month + "\"]\n}"
+	}
+	for aux.Next != nil {
+		if aux == this.FirstMonth {
+			lines = "\nnodeAnio->node" + aux.Month + "\nnode" + aux.Month + "->node" + aux.Next.Month
+		} else {
+			lines = lines + "\nnode" + aux.Month + "->node" + aux.Previous.Month + "\nnode" + aux.Month + "->node" + aux.Next.Month
+		}
+
+		nodes = nodes + "\nnode" + aux.Month + "[label=\"" + aux.Month + "\"]"
+
+		aux = aux.Next
+	}
+
+	nodes = nodes + "\nnode" + aux.Month + "[label=\"" + aux.Month + "\"]"
+	lines = lines + "\nnode" + aux.Month + "->node" + aux.Previous.Month
+
+	return "digraph G{\nrankdir=\"LR\"\n" + nodes + lines + "\n}"
+}
+
+func (this *Year) GraphNodes() string {
+	if this == nil {
+		return ""
+	} else if (this.right == nil && this.left == nil) || (this.right.Value == 0 && this.left.Value == 0) {
+		return "node" + strconv.Itoa(this.Value) + "[label=\"" + strconv.Itoa(this.Value) + "\"]\n"
+	} else if this.right == nil || this.right.Value == 0 {
+		return "node" + strconv.Itoa(this.Value) + "[label=\"" + strconv.Itoa(this.Value) + "\"]\n" + this.left.GraphNodes()
+	} else if this.left == nil || this.left.Value == 0 {
+		return "node" + strconv.Itoa(this.Value) + "[label=\"" + strconv.Itoa(this.Value) + "\"]\n" + this.right.GraphNodes()
+	} else {
+		return "node" + strconv.Itoa(this.Value) + "[label=\"" + strconv.Itoa(this.Value) + "\"]\n" + this.right.GraphNodes() + this.left.GraphNodes()
+	}
+}
+
+func (this *Year) GraphLines() string {
+	if this == nil {
+		return ""
+	} else if (this.right == nil && this.left == nil) || (this.right.Value == 0 && this.left.Value == 0) {
+		return ""
+	} else if this.right == nil || this.right.Value == 0 {
+		return "\nnode" + strconv.Itoa(this.Value) + "->" + "node" + strconv.Itoa(this.left.Value) + this.left.GraphLines()
+	} else if this.left == nil || this.left.Value == 0 {
+		return "\nnode" + strconv.Itoa(this.Value) + "->" + "node" + strconv.Itoa(this.right.Value) + this.right.GraphLines()
+	} else {
+		return "\nnode" + strconv.Itoa(this.Value) + "->" + "node" + strconv.Itoa(this.left.Value) + "\nnode" + strconv.Itoa(this.Value) + "->" + "node" + strconv.Itoa(this.right.Value) + this.left.GraphLines() + this.right.GraphLines()
+	}
 }
 
 func (this *Year) ToJson() string {
@@ -24,15 +159,31 @@ func (this *Year) ToJson() string {
 
 	if this == nil {
 		return ""
-	} else if this.right == nil && this.left == nil {
+	} else if (this.right == nil && this.left == nil) || (this.right.Value == 0 && this.left.Value == 0) {
 		return "{\n \"Anio\" : " + strconv.Itoa(this.Value) + ",\n\"Meses\" : [" + this.MonthsToJson() + "]\n}\n"
-	} else if this.right == nil {
+	} else if this.right == nil || this.right.Value == 0 {
 		return "{\n \"Anio\" : " + strconv.Itoa(this.Value) + ",\n\"Meses\" : [" + this.MonthsToJson() + "]\n}" + ",\n" + this.left.ToJson()
-	} else if this.left == nil {
+	} else if this.left == nil || this.left.Value == 0 {
 		return "{\n \"Anio\" : " + strconv.Itoa(this.Value) + ",\n\"Meses\" : [" + this.MonthsToJson() + "]\n}" + ",\n" + this.right.ToJson()
 	} else {
 		return "{\n \"Anio\" : " + strconv.Itoa(this.Value) + ",\n\"Meses\" : [" + this.MonthsToJson() + "]\n}" + ",\n" + this.right.ToJson() + ",\n" + this.left.ToJson()
 	}
+
+	/*aux := this
+	json := ""
+
+	if this == nil {
+		return ""
+	}
+
+	for aux.Next != nil {
+		json = json + "{\n \"Anio\" : " + strconv.Itoa(this.Value) + ",\n\"Meses\" : [" + this.MonthsToJson() + "]\n},\n"
+
+		aux = aux.Next
+	}
+	json = json + "{\n \"Anio\" : " + strconv.Itoa(this.Value) + ",\n\"Meses\" : [" + this.MonthsToJson() + "]\n}\n"
+
+	return json*/
 }
 
 func (this *Year) MonthsToJson() string {
@@ -119,22 +270,22 @@ func (this *Year) AddMonth(newMonth *Calendar) {
 		this.LastMonth = newMonth
 	}
 
-	fmt.Println(newMonth.Month + " added in ")
-	fmt.Print(this.Value)
-	fmt.Print(" year")
+	/*fmt.Println(newMonth.Month + " added in ")
+	fmt.Println(this.Value)
+	fmt.Println(" year")*/
 }
 
 func (avl *Year) Insert(newNode Year) *Year { // Insertar valor
 	//exist := false
 	value := newNode.Value
 	if avl == nil { // Se inserta el nodo raíz
-		fmt.Println("Insertando el nodo raiz")
-		node := Year{
+		fmt.Println("Insertando el nodo raiz " + strconv.Itoa(value))
+		node := &Year{
 			Value:      value,
 			FirstMonth: newNode.FirstMonth,
 			LastMonth:  newNode.LastMonth,
 		}
-		avl = &node
+		avl = node
 		avl.left = nil
 		avl.right = nil
 	} else if value < avl.Value { // Insertar en el subárbol izquierdo
@@ -148,6 +299,7 @@ func (avl *Year) Insert(newNode Year) *Year { // Insertar valor
 		}
 	} else if value > avl.Value { // Inserta el subárbol derecho
 		avl.right = avl.right.Insert(newNode)
+		fmt.Println("De aca sali")
 		if avl.right.height()-avl.left.height() == 2 {
 			if value < avl.right.Value {
 				avl = avl.right_left() // derecha izquierda
@@ -157,7 +309,7 @@ func (avl *Year) Insert(newNode Year) *Year { // Insertar valor
 			}
 		}
 	} else {
-		//exist = true
+		fmt.Println(strconv.Itoa(avl.Value) + "Ya existe")
 	}
 	avl.high = max1(avl.left.height(), avl.right.height()) + 1 // Actualizar altura
 
@@ -202,6 +354,117 @@ func (avl *Year) height() int {
 	} else {
 		return avl.high
 	}
+}
+
+/*func (avl *Year) Insert(value int) *Year { // Insertar valor
+	if value == 2020 {
+		fmt.Println("Iteracion")
+	}
+	if avl == nil { // Se inserta el nodo raíz
+		if value == 2020 {
+			fmt.Println("Que hace aqui?")
+		}
+		node := &Year{
+			Value: value,
+		}
+		avl = node
+		avl.left = &Year{Value: 0}
+		avl.right = &Year{Value: 0}
+		fmt.Println("Year " + strconv.Itoa(avl.Value) + " add")
+	} else if avl.Value == 0 {
+		if value == 2020 {
+			fmt.Println("Cero")
+			fmt.Println(avl.left.Value)
+			fmt.Println(avl.right.Value)
+		}
+		//avl = nil
+		//fmt.Println("Entro aqui :c")
+		node := &Year{
+			Value: value,
+		}
+		avl = node
+		avl.left = &Year{Value: 0}
+		avl.right = &Year{Value: 0}
+		//fmt.Println("Year " + strconv.Itoa(avl.Value) + " add")
+	} else if value < avl.Value { // Insertar en el subárbol izquierdo
+		if value == 2020 {
+			fmt.Println("Menor?")
+		}
+		avl.left = avl.left.Insert(value)              // recorrer para encontrar la posición que se va a insertar
+		if avl.left.height()-avl.right.height() == 2 { // Juzgar el equilibrio
+			if value < avl.left.Value { // Izquierda Izquierda
+				avl = avl.left_left()
+			} else { // Acerca de
+				avl = avl.left_right()
+			}
+		}
+	} else if value > avl.Value { // Inserta el subárbol derecho
+		if value == 2020 {
+			fmt.Println("Mayor")
+		}
+		avl.right = avl.right.Insert(value)
+		if avl.right.height()-avl.left.height() == 2 {
+			if value < avl.right.Value {
+				avl = avl.right_left() // derecha izquierda
+			} else {
+
+				avl = avl.right_right() // derecha derecha
+			}
+		}
+	} else {
+		if value == 2020 {
+			fmt.Println("WTH?")
+		}
+		fmt.Println("the key", value, "has exists")
+	}
+	avl.high = max1(avl.right.height(), avl.left.height()) + 1 // Actualizar altura
+
+	return avl
+}
+
+func (avl *Year) left_left() *Year {
+
+	k := avl.left      // Determine la nueva raíz
+	avl.left = k.right // rotar
+	k.right = avl
+	avl.high = max1(avl.left.height(), avl.right.height()) + 1
+	k.high = max1(k.left.height(), avl.high) + 1
+	return k
+}
+func (avl *Year) left_right() *Year {
+	avl.left = avl.left.left_left() // Primero gira a la izquierda el subárbol izquierdo
+	return avl.right_right()        // Rota a la derecha este nodo
+}
+func (avl *Year) right_left() *Year {
+	avl.right = avl.right.right_right()
+	return avl.left_left()
+}
+func (avl *Year) right_right() *Year {
+
+	k := avl.right
+	avl.right = k.left
+	k.left = avl
+
+	avl.high = max1(avl.left.height(), avl.right.height()) + 1
+	k.high = max1(avl.high, k.right.height()) + 1
+
+	return k
+}
+func (avl *Year) height() int {
+	if avl == nil || avl.Value == 0 {
+		return 0
+	} else {
+		return avl.high
+	}
+}*/
+
+func (avl *Year) InOrder() {
+	if avl == nil {
+		return
+	}
+	avl.left.InOrder()
+	fmt.Println(avl.Value)
+	avl.right.InOrder()
 }
 
 /*=================================*/
@@ -470,13 +733,13 @@ type Orders struct {
 }
 
 func YearInorden(node *Year) {
-	if node == nil {
+	if node == nil || node.Value == 0 {
 		return
 	}
 
 	YearInorden(node.left)
 	fmt.Println("=== Año: ")
 	fmt.Println(node.Value)
-	node.ViewMonths()
+	//node.ViewMonths()
 	YearInorden(node.right)
 }

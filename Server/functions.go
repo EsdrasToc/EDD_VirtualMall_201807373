@@ -182,14 +182,14 @@ func addOrders(w http.ResponseWriter, r *http.Request) {
 		years := strings.Split(orders.Orders[i].Date, "-")
 		//primero buscamos si el año ya existe, de lo contrario lo agregamos
 		year, err := strconv.Atoi(years[2])
-		fmt.Println(year)
+		//fmt.Println(year)
 		if err == nil {
 			anio := yearOrder.SearchYear(year)
 			if anio.Value != year {
 				yearOrder = yearOrder.Insert(Structures.Year{Value: year})
 				anio = yearOrder.SearchYear(year)
 			} else {
-				fmt.Println("El año ya existe")
+				yearOrder = yearOrder.Insert(Structures.Year{Value: year})
 			}
 
 			//Ahora que ya existe, ingresamos el mes. Si y solo si aun no existe
@@ -203,7 +203,7 @@ func addOrders(w http.ResponseWriter, r *http.Request) {
 					anio.AddMonth(&newMonth)
 					mes = anio.SearchMonth(month)
 				} else {
-					fmt.Println("El mes ya existe")
+					//fmt.Println("El mes ya existe")
 				}
 
 				//Ahora añadimos la orden al mes
@@ -215,7 +215,9 @@ func addOrders(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	Structures.YearInorden(yearOrder)
+	yearOrder.InOrder()
+
+	fmt.Println(yearOrder.SearchYear(2017))
 	fmt.Fprintln(w, "Hola mundo")
 }
 
@@ -224,4 +226,42 @@ func getYears(w http.ResponseWriter, r *http.Request) {
 
 	json = "[" + yearOrder.ToJson() + "]"
 	fmt.Fprintln(w, json)
+}
+
+func graphYears(w http.ResponseWriter, r *http.Request) {
+	var nodes, lines string
+	nodes = yearOrder.GraphNodes()
+	lines = yearOrder.GraphLines()
+	//fmt.Fprintln(w, yearOrder.GraphYears())
+	fmt.Fprintln(w, "digraph G{\n"+nodes+lines+"\n}")
+
+	product := "digraph G{\n" + nodes + lines + "\n}"
+	data := []byte(product)
+	err := ioutil.WriteFile("Anios.dot", data, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	path, _ := exec.LookPath("dot")
+	cmd, _ := exec.Command(path, "-Tpng", "Anios.dot").Output()
+	mode := int(0777)
+	ioutil.WriteFile("Anios.png", cmd, os.FileMode(mode))
+}
+
+func graphMonths(w http.ResponseWriter, r *http.Request) {
+	yearS, _ := mux.Vars(r)["Anio"]
+	year, _ := strconv.Atoi(yearS)
+	anio := yearOrder.SearchYear(year)
+
+	product := anio.GraphMonths()
+	data := []byte(product)
+	err := ioutil.WriteFile("Meses.dot", data, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	path, _ := exec.LookPath("dot")
+	cmd, _ := exec.Command(path, "-Tpng", "Meses.dot").Output()
+	mode := int(0777)
+	ioutil.WriteFile("Meses.png", cmd, os.FileMode(mode))
+
+	fmt.Fprintln(w, anio.GraphMonths())
 }

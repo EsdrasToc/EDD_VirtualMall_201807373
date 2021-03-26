@@ -1,0 +1,19 @@
+<div id="general" class="p-3 bg-white" style="width: 280px;">
+    <ul class="list-unstyled ps-0" *ngFor="let Anio of years">
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" (click)="setYear(Anio.Anio)" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+          {{ Anio.Anio }}
+        </button>
+        <div class="collapse show" id="home-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small" *ngFor="let Mes of Anio.Meses">
+            <li><a href="#" (click)="setYear(Anio.Anio)" class="link-dark rounded">{{ Mes.Mes }}</a></li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+
+    <button id="btn" type="button" class="btn btn-primary">Guardar Matriz</button>
+    <button id="btn" type="button" (click)="getGraphYears()" class="btn btn-primary">Guardar Años</button>
+    <button id="btn" type="button" (click)="getGraphMonths()" class="btn btn-primary">Guardar Meses</button>
+    <button id="btn" type="button" class="btn btn-primary">Guardar Pedidos por dia</button>
+  </div>
