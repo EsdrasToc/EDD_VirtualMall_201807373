@@ -46,3 +46,8 @@ func (this Search) Delete(array []ScoreCategory, w http.ResponseWriter) *[]Score
 	fmt.Fprintf(w, "No se encontró ninguna tienda con dichos parametros")
 	return &array
 }
+
+type SearchAccount struct {
+	Password string  `json:"Password"`
+	Dpi      float64 `json:"Dpi"`
+}

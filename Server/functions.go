@@ -23,6 +23,7 @@ var data Structures.Data
 var vectorData []Structures.ScoreCategory
 var finder Structures.Search
 var yearOrder *Structures.Year
+var Accounts *Structures.NodeAccounts
 
 func UploadShops(w http.ResponseWriter, r *http.Request) {
 	body, _ := ioutil.ReadAll(r.Body)
@@ -264,4 +265,41 @@ func graphMonths(w http.ResponseWriter, r *http.Request) {
 	ioutil.WriteFile("Meses.png", cmd, os.FileMode(mode))
 
 	fmt.Fprintln(w, anio.GraphMonths())
+}
+
+func addAccounts(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Entre")
+	body, _ := ioutil.ReadAll(r.Body)
+	var listAccounts []Structures.Account
+
+	if Accounts == nil {
+		fmt.Println("Es nulo")
+		Accounts = &Structures.NodeAccounts{
+			Leaf:   true,
+			Father: nil,
+		}
+	}
+
+	json.Unmarshal(body, &listAccounts)
+	fmt.Println(len(listAccounts))
+	for i := 0; i < len(listAccounts); i++ {
+		fmt.Println(&listAccounts[i])
+		Accounts = Accounts.Add(nil, &listAccounts[i])
+	}
+
+	Accounts.Show(0)
+
+	fmt.Fprintln(w, "Se añadieron los usuarios correctamente")
+}
+
+func authenticate(w http.ResponseWriter, r *http.Request) {
+	body, _ := ioutil.ReadAll(r.Body)
+
+	search := Structures.SearchAccount{}
+
+	json.Unmarshal(body, &search)
+
+	found := Accounts.SearchAccount(search.Dpi, search.Password)
+
+	fmt.Fprintln(w, found.AccountToJson())
 }
