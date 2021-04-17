@@ -9,12 +9,13 @@ func (avl *Product) Insert(newNode Product) *Product { // Insertar valor
 	value := newNode.Code
 	if avl == nil { // Se inserta el nodo raíz
 		node := Product{
-			Code:        value,
-			Name:        newNode.Name,
-			Description: newNode.Description,
-			Price:       newNode.Price,
-			Stock:       newNode.Stock,
-			Image:       newNode.Image,
+			Code:           value,
+			Name:           newNode.Name,
+			Description:    newNode.Description,
+			Price:          newNode.Price,
+			Stock:          newNode.Stock,
+			Image:          newNode.Image,
+			Almacenamiento: newNode.Almacenamiento,
 		}
 		avl = &node
 		avl.left = nil
@@ -106,15 +107,16 @@ func inorden(node *Product) {
 }
 
 type Product struct {
-	Name        string   `json:"Nombre"`
-	Code        int      `json:"Codigo"`
-	Description string   `json:"Descripcion"`
-	Price       float64  `json:"Precio"`
-	Stock       int      `json:"Cantidad"`
-	Image       string   `json:"Imagen"`
-	high        int      `json:"-"`
-	left        *Product `json:"-"`
-	right       *Product `json:"-"`
+	Name           string   `json:"Nombre"`
+	Code           int      `json:"Codigo"`
+	Description    string   `json:"Descripcion"`
+	Price          float64  `json:"Precio"`
+	Stock          int      `json:"Cantidad"`
+	Image          string   `json:"Imagen"`
+	Almacenamiento string   `json:"Almacenamiento"`
+	high           int      `json:"-"`
+	left           *Product `json:"-"`
+	right          *Product `json:"-"`
 }
 
 func (this *Product) ToJson() string {

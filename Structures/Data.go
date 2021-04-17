@@ -106,3 +106,31 @@ func (this *Data) ToJson(array []ScoreCategory) string {
 	_ = ioutil.WriteFile("DatosGuardados.json", json, 0644)
 	return string(json)
 }
+
+func (this Data) GetDepartamentShop(name string, score int) string {
+	found := false
+	departament := ""
+	for i := 0; i < len(this.Cells); i++ {
+		if string(name[0]) == this.Cells[i].Index {
+			for j := 0; j < len(this.Cells[i].Departaments); j++ {
+				for k := 0; k < len(this.Cells[i].Departaments[j].Shops); k++ {
+					if this.Cells[i].Departaments[j].Shops[k].Name == name {
+						departament = this.Cells[i].Departaments[j].Name
+						found = true
+						break
+					}
+				}
+
+				if found {
+					break
+				}
+			}
+		}
+
+		if found {
+			break
+		}
+	}
+
+	return departament
+}

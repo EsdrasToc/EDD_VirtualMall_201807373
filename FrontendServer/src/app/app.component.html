@@ -1,60 +1,80 @@
-<ul class="nav nav-tabs">
-					
-  <li class="nav-link"><a data-toggle="tab" href="#home">TIENDAS</a></li>
+<ng-template *ngIf="authenticate; then content else elseBlock"></ng-template>
 
-  <li class="nav-link"><a data-toggle="tab" href="#menu1">PRODUCTOS</a></li>
+  <ng-template #content>
 
-  <li class="nav-link"><a data-toggle="tab" href="#menu2">CARRITO</a></li>
+    <ul class="nav nav-tabs">
+              
+      <li class="nav-link"><a data-toggle="tab" href="#home">TIENDAS</a></li>
 
-</ul>
+      <li class="nav-link"><a data-toggle="tab" href="#menu1">PRODUCTOS</a></li>
 
-<div class="tab-content">
+      <li class="nav-link"><a data-toggle="tab" href="#menu2">CARRITO</a></li>
 
-  <div id="home" class="tab-pane fade in active"><!--TIENDAS-->
-    
-    <div class="container">
-      <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-          <div *ngFor="let shop of shops" class="card mb-4 shadow-sm">
-              <div class="card-header">
-              <h4 class="my-0 fw-normal">{{ shop.Nombre }}</h4>
-              </div>
-              <div class="card-body">
-              <img src="{{ shop.Logo }}" class="img-thumbnail" >
-              <button type="button" class="w-100 btn btn-lg btn-outline-primary" (click)="getProducts(shop.Nombre , shop.Calificacion, shop)">Ingresar</button>
+    </ul>
+
+    <div class="tab-content">
+
+      <div id="home" class="tab-pane fade in active"><!--TIENDAS-->
+        
+        <div class="container">
+          <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+              <div *ngFor="let shop of shops" class="card mb-4 shadow-sm">
+                  <div class="card-header">
+                  <h4 class="my-0 fw-normal">{{ shop.Nombre }}</h4>
+                  </div>
+                  <div class="card-body">
+                  <img src="{{ shop.Logo }}" class="img-thumbnail" >
+                  <button type="button" class="w-100 btn btn-lg btn-outline-primary" (click)="getProducts(shop.Nombre , shop.Calificacion, shop)">Ingresar</button>
+                  </div>
               </div>
           </div>
+        </div>
+        
       </div>
-    </div>
-    
-  </div>
 
-  <div id="menu1" class="tab-pane fade"> <!--PRODUCTOS-->
-    
-    <div class="container">
-      <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-        <div *ngFor="let product of products" class="card mb-4 shadow-sm">
-          <!--<app-productos [nombre]="product.Nombre" [codigo]="product.Codigo" [descripcion]="product.Descripcion" [precio]="product.Precio" [cantidad]="product.Cantidad" [imagen]="product.Imagen"></app-productos>-->
-          <app-productos [producto]="product" [tienda]="currentShop" (response)="addToCar($event)"></app-productos>
+      <div id="menu1" class="tab-pane fade"> <!--PRODUCTOS-->
+        
+        <div class="container">
+          <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+            <div *ngFor="let product of products" class="card mb-4 shadow-sm">
+              <!--<app-productos [nombre]="product.Nombre" [codigo]="product.Codigo" [descripcion]="product.Descripcion" [precio]="product.Precio" [cantidad]="product.Cantidad" [imagen]="product.Imagen"></app-productos>-->
+              <app-productos [producto]="product" [tienda]="currentShop" (response)="addToCar($event)"></app-productos>
+            </div>
+          </div>
+        </div>
+      
+      </div>
+      
+      <div id="menu2" class="tab-pane fade"> <!--CARRITO-->
+        
+        <app-carrito [car]="car"></app-carrito>
+        <div class="container">
+          <button type="button" id="success" (click)="Buy()" class="btn btn-outline-success">Finalizar compra</button>
         </div>
       </div>
+
     </div>
-  
-  </div>
-  
-  <div id="menu2" class="tab-pane fade"> <!--CARRITO-->
-    
-    <app-carrito [car]="car"></app-carrito>
-    <div class="container">
-      <button type="button" id="success" (click)="Buy()" class="btn btn-outline-success">Finalizar compra</button>
-    </div>
-  </div>
 
-</div>
+  </ng-template>
 
-<!--<app-productos [shop]='{{ shopName }}' [score]='{{ shopScore }}'></app-productos>-->
-  
-<!--<div id="menu1" class="tab-pane fade">
-  
-  <app-productos [shop]="shopName" [score]="shopScore" ></app-productos>
 
-</div>-->
+<ng-template #elseBlock>
+
+  <main class="form-signin">
+    <form>
+      <h1 class="h3 mb-3 fw-normal">Iniciar sesion</h1>
+  
+      <div class="form-floating">
+        <input type="number" [(ngModel)]="aut.Dpi" class="form-control" name="dpi" id="floatingInput" placeholder="1111111110101">
+        <label for="floatingInput">Dpi</label>
+      </div>
+      <div class="form-floating">
+        <input type="password" [(ngModel)]="aut.Password" name="password" class="form-control" id="floatingPassword" placeholder="Contraseña">
+        <label for="floatingPassword">Contraseña</label>
+      </div>
+  
+      <button class="w-100 btn btn-lg btn-primary" type="submit" (click)="Autenticar()">Ingresar</button>
+    </form>
+  </main>
+
+</ng-template>

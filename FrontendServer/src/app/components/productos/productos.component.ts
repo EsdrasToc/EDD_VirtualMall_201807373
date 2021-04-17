@@ -38,7 +38,8 @@ export class ProductosComponent implements OnInit{
         Descripcion : this.producto.Descripcion,
         Precio : this.producto.Precio,
         Cantidad : this.cantidad,
-        Imagen : this.producto.Imagen
+        Imagen : this.producto.Imagen,
+        Almacenamiento : this.producto.Almacenamiento
       }
     );
 

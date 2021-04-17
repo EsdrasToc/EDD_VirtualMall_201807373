@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RequestsService } from './services/requests.service';
-import { Shop, Product, CarProduct } from './interfaces/requests';
+import { Shop, Product, CarProduct, Authenticate, User } from './interfaces/requests';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +16,11 @@ export class AppComponent implements OnInit{
   shopScore : Number = 0;
   car :  CarProduct[] = [];
   currentShop : Shop;
-  tempProduct : CarProduct = {};
+  tempProduct : CarProduct = {}; 
+
+  currentUser :  User;
+  authenticate : boolean = false;
+  aut : Authenticate = {Dpi : 0, Password:""};
 
   constructor(
     private requestService:RequestsService/*,
@@ -24,7 +28,10 @@ export class AppComponent implements OnInit{
   ){}
 
   ngOnInit(){
+
+
     this.requestService.getShops().subscribe(data => {
+      //console.log(dd+" "+mm+" "+yyyy)
       console.log(data);
       this.shops = data;
     });
@@ -32,6 +39,20 @@ export class AppComponent implements OnInit{
       this.products = data;
     });*/
 
+  }
+
+  Autenticar(){
+    console.log(this.aut)
+    this.requestService.authenticate(this.aut).subscribe(data =>{
+      console.log(data)
+      this.currentUser = data;
+      this.currentUser.Dpi = data.Dpi
+
+      if (data.Dpi != 0 && data.Correo != ""){
+        console.log("Lo estoy dejando pasar")
+        this.authenticate = true
+      }
+    });
   }
 
   clear(){
@@ -51,6 +72,10 @@ export class AppComponent implements OnInit{
 
   addToCar($event:Product){
     //this.tempProduct.Producto = $event;
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
 
     if(this.car.length != 0){
       var find = false;
@@ -82,8 +107,9 @@ export class AppComponent implements OnInit{
               Descripcion : this.currentShop.Descripcion,
               Contacto : this.currentShop.Contacto,
               Calificacion: this.currentShop.Calificacion,
-              Logo : this.currentShop.Logo
+              Logo : this.currentShop.Logo,
             },
+            Fecha : dd+"-"+mm+"-"+yyyy,
             Producto : [
               {
                 Nombre : $event.Nombre,
@@ -110,8 +136,9 @@ export class AppComponent implements OnInit{
             Descripcion : this.currentShop.Descripcion,
             Contacto : this.currentShop.Contacto,
             Calificacion: this.currentShop.Calificacion,
-            Logo : this.currentShop.Logo
+            Logo : this.currentShop.Logo,
           },
+          Fecha  : dd+"-"+mm+"-"+yyyy,
           Producto : [
             {
               Nombre : $event.Nombre,
@@ -133,5 +160,6 @@ export class AppComponent implements OnInit{
     console.log("HOLA MUNDO");
     console.log(this.car);
     this.requestService.putPurchase(this.car).subscribe();
+    this.requestService.putOrder(this.car).subscribe();
   }
 }

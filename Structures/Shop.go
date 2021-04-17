@@ -8,15 +8,16 @@ import (
 )
 
 type Shop struct {
-	Name        string   `json:"Nombre"`
-	Description string   `json:"Descripcion"`
-	Contact     string   `json:"Contacto"`
-	Score       int      `json:"Calificacion"`
-	Logo        string   `json:"Logo"`
-	Inventory   *Product `json:"-"`
-	Previous    *Shop    `json:"-"`
-	Next        *Shop    `json:"-"`
-	Node        `json:"-"`
+	Name           string   `json:"Nombre"`
+	Description    string   `json:"Descripcion"`
+	Contact        string   `json:"Contacto"`
+	Score          int      `json:"Calificacion"`
+	Logo           string   `json:"Logo"`
+	Almacenamiento string   `json:"Almacenamiento"`
+	Inventory      *Product `json:"-"`
+	Previous       *Shop    `json:"-"`
+	Next           *Shop    `json:"-"`
+	Node           `json:"-"`
 }
 
 func (this Shop) ToString() string {

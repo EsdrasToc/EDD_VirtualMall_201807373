@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"time"
 
 	"io/ioutil"
 
@@ -248,6 +249,74 @@ func graphYears(w http.ResponseWriter, r *http.Request) {
 	ioutil.WriteFile("Anios.png", cmd, os.FileMode(mode))
 }
 
+func putOrder(w http.ResponseWriter, r *http.Request) {
+
+	fecha := time.Now()
+	fmt.Println("")
+	fmt.Println("")
+	fmt.Println(fecha.Date())
+	fmt.Println("")
+	fmt.Println("ENTRO AQUIIIIIIIIIIIII")
+	body, _ := ioutil.ReadAll(r.Body)
+
+	fmt.Println(string(body))
+
+	var car []Structures.CarProduct
+
+	json.Unmarshal(body, &car)
+	fmt.Println("=====================================")
+	fmt.Println(&car)
+
+	for i := 0; i < len(car); i++ {
+		fmt.Println(car[i].Date)
+		years := strings.Split(car[i].Date, "-")
+		//primero buscamos si el año ya existe, de lo contrario lo agregamos
+		year, err := strconv.Atoi(years[2])
+		//fmt.Println(year)
+		if err == nil {
+			anio := yearOrder.SearchYear(year)
+			if anio.Value != year {
+				yearOrder = yearOrder.Insert(Structures.Year{Value: year})
+				anio = yearOrder.SearchYear(year)
+			} else {
+				yearOrder = yearOrder.Insert(Structures.Year{Value: year})
+			}
+
+			//Ahora que ya existe, ingresamos el mes. Si y solo si aun no existe
+			month, err := strconv.Atoi(years[1])
+			if err == nil {
+				mes := anio.SearchMonth(month)
+
+				if mes.Value != month {
+					var newMonth Structures.Calendar
+					newMonth.Init(month)
+					anio.AddMonth(&newMonth)
+					mes = anio.SearchMonth(month)
+				} else {
+					//fmt.Println("El mes ya existe")
+				}
+
+				//Ahora añadimos la orden al mes
+				day, err := strconv.Atoi(years[0])
+				if err == nil {
+
+					aux := &Structures.Order{
+						Date:        car[i].Date,
+						Shop:        car[i].Shop_.Name,
+						Departament: data.GetDepartamentShop(car[i].Shop_.Name, car[i].Shop_.Score),
+						Products:    car[i].Products,
+					}
+
+					mes.AddOrder(aux.Departament, day, aux)
+				}
+			}
+		}
+	}
+
+	yearOrder.InOrder()
+
+}
+
 func graphMonths(w http.ResponseWriter, r *http.Request) {
 	yearS, _ := mux.Vars(r)["Anio"]
 	year, _ := strconv.Atoi(yearS)
@@ -295,9 +364,13 @@ func addAccounts(w http.ResponseWriter, r *http.Request) {
 func authenticate(w http.ResponseWriter, r *http.Request) {
 	body, _ := ioutil.ReadAll(r.Body)
 
+	fmt.Print(string(body))
+
 	search := Structures.SearchAccount{}
 
 	json.Unmarshal(body, &search)
+
+	fmt.Println(search.Dpi)
 
 	found := Accounts.SearchAccount(search.Dpi, search.Password)
 

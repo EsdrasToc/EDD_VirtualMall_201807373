@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 //import jsonData from '../';
 
-import { Shop, Product, CarProduct } from './../interfaces/requests';
+import { Shop, Product, CarProduct, Authenticate, User } from './../interfaces/requests';
 
 @Injectable({
   providedIn: 'root'
@@ -25,5 +25,17 @@ export class RequestsService {
   putPurchase(products : CarProduct[]){
     const path = "http://localhost:3000/putPurchase";
     return this.http.put<CarProduct[]>(path, products);
+  }
+
+  authenticate(data : Authenticate){
+    const path = "http://localhost:3000/Authenticate";
+    console.log("holiiiis")
+    console.log(data)
+    return this.http.post<User>(path, data);
+  }
+
+  putOrder(data : CarProduct[]){
+    const path = "http://localhost:3000/putOrder";
+    return this.http.put<CarProduct[]>(path, data);
   }
 }
