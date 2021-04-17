@@ -1,16 +1,49 @@
-<ul class="nav nav-tabs">
+<ng-template *ngIf="authenticate; then page else login"></ng-template>
+
+<ng-template #page>
+  <ul class="nav nav-tabs">
 					
-  <li class="nav-link active"><a data-toggle="tab" href="#home">TIENDAS</a></li>
+    <li class="nav-link active"><a data-toggle="tab" href="#home">TIENDAS</a></li>
+  
+  </ul>
 
-</ul>
+  <div class="tab-content">
 
-<div class="tab-content">
-
-  <div id="home" class="tab-pane fade in active"><!--TIENDAS-->
-    
-    <app-report-selector id="ReportSelector" [years]="years"></app-report-selector>
-    
+    <div id="home" class="tab-pane fade in active"><!--TIENDAS-->
+      
+      <app-report-selector id="ReportSelector" [years]="years"></app-report-selector>
+      
+    </div>
   </div>
-</div>
+</ng-template>
+
+<ng-template #login>
+
+  <main class="form-signin">
+    <form>
+      <h1 class="h3 mb-3 fw-normal">Iniciar sesion</h1>
+  
+      <div class="form-floating">
+        <input type="number"  class="form-control" [(ngModel)]="DPI" name="dpi" id="floatingInput" placeholder="1111111110101">
+        <label for="floatingInput">Dpi</label>
+      </div>
+      <div class="form-floating">
+        <input type="email"  class="form-control" [(ngModel)]="Correo" name="Correo" id="floatingInput" placeholder="example@example.com">
+        <label for="floatingInput">E-mail</label>
+      </div>
+      <div class="form-floating">
+        <input type="text"  class="form-control"  name="Nombre" [(ngModel)]="Nombre" id="floatingInput" placeholder="Example11">
+        <label for="floatingInput">Nombre</label>
+      </div>
+      <div class="form-floating">
+        <input type="password"  name="password" [(ngModel)]="Password" class="form-control" id="floatingPassword" placeholder="Contraseña">
+        <label for="floatingPassword">Contraseña</label>
+      </div>
+  
+      <button class="w-100 btn btn-lg btn-primary" type="submit" (click)="Authenticate()">Ingresar</button>
+    </form>
+  </main>
+
+</ng-template>
 
 <router-outlet></router-outlet>
