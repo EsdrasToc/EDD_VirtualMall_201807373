@@ -339,7 +339,7 @@ func graphMonths(w http.ResponseWriter, r *http.Request) {
 func addAccounts(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Entre")
 	body, _ := ioutil.ReadAll(r.Body)
-	var listAccounts []Structures.Account
+	var listAccounts Structures.Accounts
 
 	if Accounts == nil {
 		fmt.Println("Es nulo")
@@ -350,10 +350,10 @@ func addAccounts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.Unmarshal(body, &listAccounts)
-	fmt.Println(len(listAccounts))
-	for i := 0; i < len(listAccounts); i++ {
-		fmt.Println(&listAccounts[i])
-		Accounts = Accounts.Add(nil, &listAccounts[i])
+	fmt.Println(len(listAccounts.Accounts))
+	for i := 0; i < len(listAccounts.Accounts); i++ {
+		fmt.Println(&listAccounts.Accounts[i])
+		Accounts = Accounts.Add(nil, &listAccounts.Accounts[i])
 	}
 
 	Accounts.Show(0)
@@ -375,4 +375,34 @@ func authenticate(w http.ResponseWriter, r *http.Request) {
 	found := Accounts.SearchAccount(search.Dpi, search.Password)
 
 	fmt.Fprintln(w, found.AccountToJson())
+}
+
+func GetMonth(w http.ResponseWriter, r *http.Request) {
+	body, _ := ioutil.ReadAll(r.Body)
+
+	var search Structures.SearchMonth
+
+	json.Unmarshal(body, &search)
+
+	anio := yearOrder.SearchYear(search.Anio)
+
+	mes := anio.SearchMonth(search.Mes)
+
+	fmt.Print(mes)
+}
+
+func GraphAccounts(w http.ResponseWriter, r *http.Request) {
+	graph := Accounts.GraphBTree()
+
+	data := []byte(graph)
+	err := ioutil.WriteFile("Cuentas.dot", data, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	path, _ := exec.LookPath("dot")
+	cmd, _ := exec.Command(path, "-Tpng", "Cuentas.dot").Output()
+	mode := int(0777)
+	ioutil.WriteFile("Cuentas.png", cmd, os.FileMode(mode))
+
+	fmt.Fprintln(w, graph)
 }

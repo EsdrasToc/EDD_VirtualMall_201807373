@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Anio } from '../interfaces/requests';
+import { Anio, Calendar, SearchMonth } from '../interfaces/requests';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -23,5 +23,11 @@ export class ServicesService {
     const path = 'http://localhost:3000/getGraphMonths/'+year;
     console.log(path);
     return this.http.get<any>(path);
+  }
+
+  getDaysOfMonth(search : SearchMonth){
+    const path = 'http://localhost:3000/Month';
+    
+    return this.http.put<Calendar>(path, search)
   }
 }

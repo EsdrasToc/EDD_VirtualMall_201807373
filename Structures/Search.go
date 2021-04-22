@@ -48,6 +48,11 @@ func (this Search) Delete(array []ScoreCategory, w http.ResponseWriter) *[]Score
 }
 
 type SearchAccount struct {
-	Password string  `json:"Password"`
-	Dpi      float64 `json:"Dpi"`
+	Password string `json:"Password"`
+	Dpi      int64  `json:"Dpi"`
+}
+
+type SearchMonth struct {
+	Anio int
+	Mes  int
 }

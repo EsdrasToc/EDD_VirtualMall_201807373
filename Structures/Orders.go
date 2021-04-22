@@ -688,6 +688,53 @@ func (this *Calendar) AddOrder(departament string, dayN int, order *Order) {
 	auxRow.AddOrder(order)
 }
 
+func (this Calendar) NumberOfRows() int {
+	aux := this.Start
+	var i int
+	for aux != nil {
+		if aux.Down == nil {
+			return aux.Row
+		}
+		aux = aux.Down
+	}
+
+	return i
+}
+
+func (this Calendar) NumberOfColumns() int {
+	aux := this.Start
+	var i int
+
+	for aux != nil {
+		i++
+		aux = aux.Right
+	}
+
+	return i
+}
+
+func (this Calendar) RowsToArray() string {
+	json := ""
+
+	aux := this.Start
+
+	for aux != nil {
+		if aux.RowName != "" {
+
+		}
+	}
+
+	return json
+}
+
+/*func (this Calendar) ToShow() string {
+	json := ""
+	rows := this.NumberOfRows()
+	columns := this.NumberOfColumns()
+
+	return ""
+}*/
+
 type Day struct {
 	Up         *Day
 	Down       *Day
