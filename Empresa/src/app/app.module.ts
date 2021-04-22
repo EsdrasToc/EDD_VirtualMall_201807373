@@ -6,11 +6,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ReportSelectorComponent } from './components/report-selector/report-selector.component';
 import { FormsModule } from '@angular/forms';
+import { UsersComponent } from './components/users/users.component';
+import { UploadComponent } from './components/upload/upload.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ReportSelectorComponent
+    ReportSelectorComponent,
+    UsersComponent,
+    UploadComponent
   ],
   imports: [
     BrowserModule,

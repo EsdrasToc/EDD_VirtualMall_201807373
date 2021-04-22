@@ -45,6 +45,7 @@ func New() Server {
 	r.HandleFunc("/putOrder", putOrder).Methods("PUT")
 	r.HandleFunc("/Month", GetMonth).Methods("PUT")
 	r.HandleFunc("/GraphAccounts", GraphAccounts).Methods("GET")
+	r.HandleFunc("/NewUser", addUser).Methods("PUT")
 
 	log.Fatal(http.ListenAndServe(":3000", handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"}), handlers.AllowedOrigins([]string{"*"}))(r)))
 

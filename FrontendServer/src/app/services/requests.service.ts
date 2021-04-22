@@ -38,4 +38,10 @@ export class RequestsService {
     const path = "http://localhost:3000/putOrder";
     return this.http.put<CarProduct[]>(path, data);
   }
+
+  NewUser(user : User){
+    const path = "http://localhost:3000/NewUser"
+
+    return this.http.put(path, user);
+  }
 }

@@ -4,6 +4,8 @@
   <ul class="nav nav-tabs">
 					
     <li class="nav-link active"><a data-toggle="tab" href="#home">TIENDAS</a></li>
+    <li class="nav-link active"><a data-toggle="tab" href="#users">USUARIOS</a></li>
+    <li class="nav-link active"><a data-toggle="tab" href="#upload">CARGAR DATOS</a></li>
   
   </ul>
 
@@ -12,6 +14,17 @@
     <div id="home" class="tab-pane fade in active"><!--TIENDAS-->
       
       <app-report-selector id="ReportSelector" [years]="years"></app-report-selector>
+      
+    </div>
+
+    <div id="users" class="tab-pane fade in active"><!--TIENDAS-->
+      
+      <app-users></app-users>
+      
+    </div>
+    <div id="upload" class="tab-pane fade in active"><!--TIENDAS-->
+      
+      <app-upload></app-upload>
       
     </div>
   </div>

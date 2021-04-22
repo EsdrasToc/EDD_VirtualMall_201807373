@@ -22,6 +22,8 @@ export class AppComponent implements OnInit{
   authenticate : boolean = false;
   aut : Authenticate = {Dpi : 0, Password:""};
 
+  newUser : User = {Dpi:0, Nombre:"", Password:"", Correo:"", Cuenta:""};
+
   constructor(
     private requestService:RequestsService/*,
     private productosComponent:ProductosComponent*/
@@ -161,5 +163,9 @@ export class AppComponent implements OnInit{
     console.log(this.car);
     this.requestService.putPurchase(this.car).subscribe();
     this.requestService.putOrder(this.car).subscribe();
+  }
+
+  Register(){
+    this.requestService.NewUser(this.newUser).subscribe();
   }
 }

@@ -30,4 +30,16 @@ export class ServicesService {
     
     return this.http.put<Calendar>(path, search)
   }
+
+  getGraphUsers(){
+    const path = 'http://localhost:3000/GraphAccounts'
+
+    return this.http.get(path);
+  }
+
+  PostShops(body : String){
+    const path = 'http://localhost:3000/cargartienda'
+
+    return this.http.post(path, body);
+  }
 }

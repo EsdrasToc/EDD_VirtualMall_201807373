@@ -60,7 +60,36 @@
 
 <ng-template #elseBlock>
 
-  <main class="form-signin">
+  <main class="form-signin" id="Registro">
+    <form>
+      <h1 class="h3 mb-3 fw-normal">Registrate</h1>
+  
+      <div class="form-floating">
+        <input type="number" class="form-control" [(ngModel)]="newUser.Dpi" name="dpiR" id="floatingInput" placeholder="1111111110101">
+        <label for="floatingInput">Dpi</label>
+      </div>
+      <div class="form-floating">
+        <input type="Email" class="form-control" [(ngModel)]="newUser.Correo" name="emailR" id="floatingInput" placeholder="example@example.com">
+        <label for="floatingInput">Email</label>
+      </div>
+      <div class="form-floating">
+        <input type="text" class="form-control" [(ngModel)]="newUser.Nombre" name="nameR" id="floatingInput" placeholder="Nombres apellidos">
+        <label for="floatingInput">Nombre</label>
+      </div>
+      <div class="form-floating">
+        <input type="password"  name="passwordR" class="form-control" [(ngModel)]="newUser.Password" id="floatingPassword" placeholder="Contraseña">
+        <label for="floatingPassword">Contraseña</label>
+      </div>
+      <div class="form-floating">
+        <input type="text" class="form-control" name="cuentaR" [(ngModel)]="newUser.Cuenta" id="floatingInput" placeholder="example12">
+        <label for="floatingInput">Dpi</label>
+      </div>
+  
+      <button class="w-100 btn btn-lg btn-primary" type="submit" (click)="Register()">Registrarse</button>
+    </form>
+  </main>
+
+  <main class="form-signin" id="inicio">
     <form>
       <h1 class="h3 mb-3 fw-normal">Iniciar sesion</h1>
   

@@ -1,0 +1,16 @@
+.container{
+    width: 100%;
+    align-items: center;
+}
+
+textarea{
+    width: 75%;
+}
+
+h1{
+    width: 100%;
+}
+
+#btn{
+    width: 75%;
+}

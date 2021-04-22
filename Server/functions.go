@@ -406,3 +406,24 @@ func GraphAccounts(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintln(w, graph)
 }
+
+func addUser(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Entre")
+	body, _ := ioutil.ReadAll(r.Body)
+	var listAccounts Structures.Account
+
+	if Accounts == nil {
+		fmt.Println("Es nulo")
+		Accounts = &Structures.NodeAccounts{
+			Leaf:   true,
+			Father: nil,
+		}
+	}
+
+	json.Unmarshal(body, &listAccounts)
+	Accounts = Accounts.Add(nil, &listAccounts)
+
+	Accounts.Show(0)
+
+	fmt.Fprintln(w, "Se añadieron los usuarios correctamente")
+}
