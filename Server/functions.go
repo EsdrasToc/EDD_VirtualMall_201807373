@@ -25,6 +25,8 @@ var vectorData []Structures.ScoreCategory
 var finder Structures.Search
 var yearOrder *Structures.Year
 var Accounts *Structures.NodeAccounts
+var CurrentUser *Structures.Account
+var MerkleTreeO *Structures.MerkleTreeOrders
 
 func UploadShops(w http.ResponseWriter, r *http.Request) {
 	body, _ := ioutil.ReadAll(r.Body)
@@ -305,15 +307,19 @@ func putOrder(w http.ResponseWriter, r *http.Request) {
 						Shop:        car[i].Shop_.Name,
 						Departament: data.GetDepartamentShop(car[i].Shop_.Name, car[i].Shop_.Score),
 						Products:    car[i].Products,
+						User:        *CurrentUser,
 					}
 
+					MerkleTreeO = MerkleTreeO.AddOrder(aux)
 					mes.AddOrder(aux.Departament, day, aux)
 				}
 			}
 		}
 	}
 
-	yearOrder.InOrder()
+	//yearOrder.InOrder()
+
+	MerkleTreeO.Show()
 
 }
 
@@ -373,6 +379,8 @@ func authenticate(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(search.Dpi)
 
 	found := Accounts.SearchAccount(search.Dpi, search.Password)
+
+	CurrentUser = found
 
 	fmt.Fprintln(w, found.AccountToJson())
 }

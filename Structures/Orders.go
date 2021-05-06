@@ -768,8 +768,14 @@ type Order struct {
 	Departament string    `json:"Departamento"`
 	Score       int       `json:"Calificacion"`
 	Products    []Product `json:"Productos"`
+	User        Account   `json:"-"`
 	Next        *Order    `json:"-"`
 }
+
+/*func (this *Order) ToHash() (string, []byte){
+	text := ""
+	text = text
+}*/
 
 /*===================================*/
 /*Finaliza matriz dispersa de pedidos*/
