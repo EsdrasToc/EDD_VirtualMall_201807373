@@ -15,7 +15,7 @@ type IProducts struct {
 	Products    []Product `json:"Productos"`
 }
 
-func (this *Inventory) ReadJson(text []byte, data []ScoreCategory) []ScoreCategory {
+func (this *Inventory) ReadJson(text []byte, data []ScoreCategory, merkle *MerkleTreeProducts) ([]ScoreCategory, *MerkleTreeProducts) {
 	json.Unmarshal(text, &this)
 	shop := &Shop{}
 	real := false
@@ -25,11 +25,14 @@ func (this *Inventory) ReadJson(text []byte, data []ScoreCategory) []ScoreCatego
 				shop, real = data[j].Search(this.Inventories[i].Shop, this.Inventories[i].Score)
 				if real {
 					shop.AddProducts(this.Inventories[i].Products)
+					for k := 0; k < len(this.Inventories[i].Products); k++ {
+						merkle = merkle.AddProduct(&this.Inventories[i].Products[k])
+					}
 				}
 			}
 		}
 
 	}
 
-	return data
+	return data, merkle
 }

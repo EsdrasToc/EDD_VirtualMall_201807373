@@ -9,7 +9,7 @@ type Data struct {
 	Cells []Cell `json:"Datos"`
 }
 
-func (this *Data) ReadJson(text []byte) []ScoreCategory {
+func (this *Data) ReadJson(text []byte, merkle *MerkleTreeShops) ([]ScoreCategory, *MerkleTreeShops) {
 	json.Unmarshal(text, &this)
 
 	k := len(this.Cells) * len(this.Cells[0].Departaments)
@@ -42,7 +42,7 @@ func (this *Data) ReadJson(text []byte) []ScoreCategory {
 			pos += 5
 
 			for l := 0; l < len(this.Cells[i].Departaments[j].Shops); l++ {
-
+				merkle = merkle.AddShop(&this.Cells[i].Departaments[j].Shops[l])
 				if this.Cells[i].Departaments[j].Shops[l].Score < 6 && this.Cells[i].Departaments[j].Shops[l].Score > 0 {
 					score := this.Cells[i].Departaments[j].Shops[l].Score
 					aux[(k*5)+score-1].Add(this.Cells[i].Departaments[j].Shops[l])
@@ -55,7 +55,7 @@ func (this *Data) ReadJson(text []byte) []ScoreCategory {
 		}
 	}
 
-	return aux
+	return aux, merkle
 }
 
 func (this Data) GetCells() []Cell {

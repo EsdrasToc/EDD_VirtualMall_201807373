@@ -27,10 +27,14 @@ var yearOrder *Structures.Year
 var Accounts *Structures.NodeAccounts
 var CurrentUser *Structures.Account
 var MerkleTreeO *Structures.MerkleTreeOrders
+var MerkleTreeS *Structures.MerkleTreeShops
+var MerkleTreeP *Structures.MerkleTreeProducts
+var MerkleTreeU *Structures.MerkleTreeUsers
 
 func UploadShops(w http.ResponseWriter, r *http.Request) {
 	body, _ := ioutil.ReadAll(r.Body)
-	vectorData = data.ReadJson(body)
+	vectorData, MerkleTreeS = data.ReadJson(body, MerkleTreeS)
+	MerkleTreeS.Show()
 	fmt.Fprintf(w, "Informacion guardada correctamente")
 }
 
@@ -105,11 +109,12 @@ func AddInventory(w http.ResponseWriter, r *http.Request) {
 
 	var inventory Structures.Inventory
 
-	vectorData = inventory.ReadJson(body, vectorData)
+	vectorData, MerkleTreeP = inventory.ReadJson(body, vectorData, MerkleTreeP)
+	MerkleTreeP.Show()
 
-	for i := 0; i < len(vectorData); i++ {
+	/*for i := 0; i < len(vectorData); i++ {
 		vectorData[i].PrintInv()
-	}
+	}*/
 
 	fmt.Fprintln(w, "Se han añadido los productos correctamente")
 }
@@ -358,11 +363,13 @@ func addAccounts(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(body, &listAccounts)
 	fmt.Println(len(listAccounts.Accounts))
 	for i := 0; i < len(listAccounts.Accounts); i++ {
-		fmt.Println(&listAccounts.Accounts[i])
+		//fmt.Println(&listAccounts.Accounts[i])
 		Accounts = Accounts.Add(nil, &listAccounts.Accounts[i])
+		MerkleTreeU = MerkleTreeU.AddUser(&listAccounts.Accounts[i])
 	}
 
-	Accounts.Show(0)
+	MerkleTreeU.Show()
+	//Accounts.Show(0)
 
 	fmt.Fprintln(w, "Se añadieron los usuarios correctamente")
 }
@@ -430,8 +437,10 @@ func addUser(w http.ResponseWriter, r *http.Request) {
 
 	json.Unmarshal(body, &listAccounts)
 	Accounts = Accounts.Add(nil, &listAccounts)
+	MerkleTreeU = MerkleTreeU.AddUser(&listAccounts)
+	MerkleTreeU.Show()
 
-	Accounts.Show(0)
+	//Accounts.Show(0)
 
 	fmt.Fprintln(w, "Se añadieron los usuarios correctamente")
 }
