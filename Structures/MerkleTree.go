@@ -1,6 +1,7 @@
 package Structures
 
 import (
+	"encoding/base64"
 	"fmt"
 	"strconv"
 
@@ -14,6 +15,34 @@ import (
 type MerkleTreeOrders struct {
 	Root *MTreeONode
 	N    *int
+}
+
+func (this *MerkleTreeOrders) GetHash() string {
+	if this == nil {
+		return ""
+	}
+	return this.Root.GetHash()
+}
+
+func (this *MerkleTreeShops) GetHash() string {
+	if this == nil {
+		return ""
+	}
+	return this.Root.GetHash()
+}
+
+func (this *MerkleTreeUsers) GetHash() string {
+	if this == nil {
+		return ""
+	}
+	return this.Root.GetHash()
+}
+
+func (this *MerkleTreeProducts) GetHash() string {
+	if this == nil {
+		return ""
+	}
+	return this.Root.GetHash()
 }
 
 func (this *MerkleTreeOrders) Show() {
@@ -37,7 +66,8 @@ func (this *MerkleTreeOrders) AddOrder(order *Order) *MerkleTreeOrders {
 		auxR := &MTreeONode{Leaf: true, Full: false}
 
 		this.Root = &MTreeONode{Leaf: false, Full: false, Left: auxL, Right: auxR}
-		info := string(this.Root.Left.Hash) + string(this.Root.Right.Hash)
+		//info := string(this.Root.Left.Hash) + string(this.Root.Right.Hash)
+		info := this.Root.Left.GetHash() + this.Root.Right.GetHash()
 		h.Write([]byte(info))
 		//hash, _ := fernet.EncryptAndSign([]byte(info), &fernet.Key{})
 		hash = h.Sum(nil)
@@ -74,6 +104,34 @@ type MTreeONode struct {
 	Right *MTreeONode
 }
 
+func (this *MTreeONode) GetHash() string {
+	if this == nil {
+		return ""
+	}
+	return base64.URLEncoding.EncodeToString(this.Hash)
+}
+
+func (this *MTreePNode) GetHash() string {
+	if this == nil {
+		return ""
+	}
+	return base64.URLEncoding.EncodeToString(this.Hash)
+}
+
+func (this *MTreeSNode) GetHash() string {
+	if this == nil {
+		return ""
+	}
+	return base64.URLEncoding.EncodeToString(this.Hash)
+}
+
+func (this *MTreeUNode) GetHash() string {
+	if this == nil {
+		return ""
+	}
+	return base64.URLEncoding.EncodeToString(this.Hash)
+}
+
 func (this *MTreeONode) AddNode(new MTreeONode) *MTreeONode {
 	if this.Leaf {
 		this = &new
@@ -89,7 +147,7 @@ func (this *MTreeONode) AddNode(new MTreeONode) *MTreeONode {
 
 	//encriptar izquierda y derecha
 	if this.Left != nil && this.Right != nil {
-		info := string(this.Left.Hash) + string(this.Right.Hash)
+		info := this.Left.GetHash() + this.Right.GetHash()
 		h := sha256.New()
 		h.Write([]byte(info))
 		//hash, _ := fernet.EncryptAndSign([]byte(info), &fernet.Key{})
@@ -117,8 +175,10 @@ func (this *MTreeONode) GetLevels() int {
 
 func (this *MTreeONode) CreateTree(level int) {
 	if level == 2 {
-		this.Left = &MTreeONode{Leaf: true, Full: false}
-		this.Right = &MTreeONode{Leaf: true, Full: false}
+		h := sha256.New()
+		h.Write([]byte("-1"))
+		this.Left = &MTreeONode{Leaf: true, Full: false, Hash: h.Sum(nil)}
+		this.Right = &MTreeONode{Leaf: true, Full: false, Hash: h.Sum(nil)}
 		return
 	} else {
 		this.Right = &MTreeONode{Leaf: false, Full: false}
@@ -181,7 +241,8 @@ func (this *MerkleTreeShops) AddShop(shop *Shop) *MerkleTreeShops {
 		auxR := &MTreeSNode{Leaf: true, Full: false}
 
 		this.Root = &MTreeSNode{Leaf: false, Full: false, Left: auxL, Right: auxR}
-		info := string(this.Root.Left.Hash) + string(this.Root.Right.Hash)
+		info := this.Root.Left.GetHash() + this.Root.Right.GetHash()
+		//info := string(this.Root.Left.Hash) + string(this.Root.Right.Hash)
 		h.Write([]byte(info))
 		//hash, _ := fernet.EncryptAndSign([]byte(info), &fernet.Key{})
 		hash = h.Sum(nil)
@@ -233,7 +294,8 @@ func (this *MTreeSNode) AddNode(new MTreeSNode) *MTreeSNode {
 
 	//encriptar izquierda y derecha
 	if this.Left != nil && this.Right != nil {
-		info := string(this.Left.Hash) + string(this.Right.Hash)
+		//info := string(this.Left.Hash) + string(this.Right.Hash)
+		info := this.Left.GetHash() + this.Right.GetHash()
 		h := sha256.New()
 		h.Write([]byte(info))
 		//hash, _ := fernet.EncryptAndSign([]byte(info), &fernet.Key{})
@@ -261,8 +323,10 @@ func (this *MTreeSNode) GetLevels() int {
 
 func (this *MTreeSNode) CreateTree(level int) {
 	if level == 2 {
-		this.Left = &MTreeSNode{Leaf: true, Full: false}
-		this.Right = &MTreeSNode{Leaf: true, Full: false}
+		h := sha256.New()
+		h.Write([]byte("-1"))
+		this.Left = &MTreeSNode{Leaf: true, Full: false, Hash: h.Sum(nil)}
+		this.Right = &MTreeSNode{Leaf: true, Full: false, Hash: h.Sum(nil)}
 		return
 	} else {
 		this.Right = &MTreeSNode{Leaf: false, Full: false}
@@ -325,7 +389,8 @@ func (this *MerkleTreeProducts) AddProduct(product *Product) *MerkleTreeProducts
 		auxR := &MTreePNode{Leaf: true, Full: false}
 
 		this.Root = &MTreePNode{Leaf: false, Full: false, Left: auxL, Right: auxR}
-		info := string(this.Root.Left.Hash) + string(this.Root.Right.Hash)
+		//info := string(this.Root.Left.Hash) + string(this.Root.Right.Hash)
+		info := this.Root.Left.GetHash() + this.Root.Right.GetHash()
 		h.Write([]byte(info))
 		//hash, _ := fernet.EncryptAndSign([]byte(info), &fernet.Key{})
 		hash = h.Sum(nil)
@@ -377,7 +442,8 @@ func (this *MTreePNode) AddNode(new MTreePNode) *MTreePNode {
 
 	//encriptar izquierda y derecha
 	if this.Left != nil && this.Right != nil {
-		info := string(this.Left.Hash) + string(this.Right.Hash)
+		//info := string(this.Left.Hash) + string(this.Right.Hash)
+		info := this.Left.GetHash() + this.Right.GetHash()
 		h := sha256.New()
 		h.Write([]byte(info))
 		//hash, _ := fernet.EncryptAndSign([]byte(info), &fernet.Key{})
@@ -405,8 +471,10 @@ func (this *MTreePNode) GetLevels() int {
 
 func (this *MTreePNode) CreateTree(level int) {
 	if level == 2 {
-		this.Left = &MTreePNode{Leaf: true, Full: false}
-		this.Right = &MTreePNode{Leaf: true, Full: false}
+		h := sha256.New()
+		h.Write([]byte("-1"))
+		this.Left = &MTreePNode{Leaf: true, Full: false, Hash: h.Sum(nil)}
+		this.Right = &MTreePNode{Leaf: true, Full: false, Hash: h.Sum(nil)}
 		return
 	} else {
 		this.Right = &MTreePNode{Leaf: false, Full: false}
@@ -470,7 +538,8 @@ func (this *MerkleTreeUsers) AddUser(user *Account) *MerkleTreeUsers {
 		auxR := &MTreeUNode{Leaf: true, Full: false}
 
 		this.Root = &MTreeUNode{Leaf: false, Full: false, Left: auxL, Right: auxR}
-		info := string(this.Root.Left.Hash) + string(this.Root.Right.Hash)
+		//info := string(this.Root.Left.Hash) + string(this.Root.Right.Hash)
+		info := this.Root.Left.GetHash() + this.Root.Right.GetHash()
 		h.Write([]byte(info))
 		//hash, _ := fernet.EncryptAndSign([]byte(info), &fernet.Key{})
 		hash = h.Sum(nil)
@@ -522,7 +591,8 @@ func (this *MTreeUNode) AddNode(new MTreeUNode) *MTreeUNode {
 
 	//encriptar izquierda y derecha
 	if this.Left != nil && this.Right != nil {
-		info := string(this.Left.Hash) + string(this.Right.Hash)
+		//info := string(this.Left.Hash) + string(this.Right.Hash)
+		info := this.Left.GetHash() + this.Right.GetHash()
 		h := sha256.New()
 		h.Write([]byte(info))
 		//hash, _ := fernet.EncryptAndSign([]byte(info), &fernet.Key{})
@@ -550,8 +620,10 @@ func (this *MTreeUNode) GetLevels() int {
 
 func (this *MTreeUNode) CreateTree(level int) {
 	if level == 2 {
-		this.Left = &MTreeUNode{Leaf: true, Full: false}
-		this.Right = &MTreeUNode{Leaf: true, Full: false}
+		h := sha256.New()
+		h.Write([]byte("-1"))
+		this.Left = &MTreeUNode{Leaf: true, Full: false, Hash: h.Sum(nil)}
+		this.Right = &MTreeUNode{Leaf: true, Full: false, Hash: h.Sum(nil)}
 		return
 	} else {
 		this.Right = &MTreeUNode{Leaf: false, Full: false}
