@@ -7,6 +7,7 @@ export interface Shop{
 	Contacto : String;
 	Calificacion: Number;
 	Logo : String;
+	Comentarios ?: Comentario[];
 }
 
 export interface Product{
@@ -17,6 +18,7 @@ export interface Product{
 	Cantidad ? :number;
 	Imagen ? :String;
 	Almacenamiento ? : String;
+	Comentarios ?: Comentario[];
 }
 
 export interface CarProduct{
@@ -45,3 +47,19 @@ export interface Pedido{
 	Calificacion : Number;
 	Productos : Product[];
 } 
+
+export interface Comentario{
+	Usuario : User;
+	Contenido : String;
+	SubComentarios : Comentario[];
+}
+
+export interface ForComment{
+	Producto : Product;
+	Contenido : String;
+}
+
+export interface ShopComment{
+	Tienda : Shop;
+	Contenido : String;
+}

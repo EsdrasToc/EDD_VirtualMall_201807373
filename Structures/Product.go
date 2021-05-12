@@ -1,8 +1,8 @@
 package Structures
 
 import (
-	"encoding/json"
 	"fmt"
+	"strconv"
 )
 
 func (avl *Product) Insert(newNode Product) *Product { // Insertar valor
@@ -100,29 +100,52 @@ func inorden(node *Product) {
 	}
 
 	inorden(node.left)
-	fmt.Println("=== Producto: " + node.Name)
-	fmt.Println("=== Stock: ")
-	fmt.Println(node.Stock)
+	//fmt.Println("=== Producto: " + node.Name)
+	//fmt.Println("=== Stock: ")
+	//fmt.Println(node.Stock)
 	inorden(node.right)
 }
 
 type Product struct {
-	Name           string   `json:"Nombre"`
-	Code           int      `json:"Codigo"`
-	Description    string   `json:"Descripcion"`
-	Price          float64  `json:"Precio"`
-	Stock          int      `json:"Cantidad"`
-	Image          string   `json:"Imagen"`
-	Almacenamiento string   `json:"Almacenamiento"`
-	high           int      `json:"-"`
-	left           *Product `json:"-"`
-	right          *Product `json:"-"`
+	Name           string    `json:"Nombre"`
+	Code           int       `json:"Codigo"`
+	Description    string    `json:"Descripcion"`
+	Price          float64   `json:"Precio"`
+	Stock          int       `json:"Cantidad"`
+	Image          string    `json:"Imagen"`
+	Almacenamiento string    `json:"Almacenamiento"`
+	Comments       *Comments `json:"-"`
+	high           int       `json:"-"`
+	left           *Product  `json:"-"`
+	right          *Product  `json:"-"`
+}
+
+func (this *Product) SearchProduct(product *Product) *Product {
+	if this == nil {
+		return nil
+	}
+
+	if this.Code == product.Code && this.Name == product.Name {
+		return this
+	}
+
+	left := this.left.SearchProduct(product)
+	right := this.right.SearchProduct(product)
+	if left != nil {
+		return left
+	} else {
+		return right
+	}
 }
 
 func (this *Product) ToJson() string {
-	file, _ := json.MarshalIndent(this, "", "\t")
+	//file, _ := json.MarshalIndent(this, "", "\t")
 
-	return string(file)
+	var text string
+
+	text = "{\n\"Nombre\":\"" + this.Name + "\",\n\"Codigo\":" + strconv.Itoa(this.Code) + ",\n\"Descripcion\":\"" + this.Description + "\",\n\"Precio\":" + strconv.FormatFloat(this.Price, 'E', -1, 64) + ",\n\"Cantidad\":" + strconv.Itoa(this.Stock) + ",\n\"Imagen\":\"" + this.Image + "\",\n\"Almacenamiento\":\"" + this.Almacenamiento + "\",\n\"Comentarios\":[" + this.Comments.ToJson() + "]\n}"
+	fmt.Println(text)
+	return text
 }
 
 func (this *Product) GetProducts() string {
@@ -137,4 +160,17 @@ func (this *Product) GetProducts() string {
 	} else {
 		return this.ToJson() + ",\n" + this.right.GetProducts() + ",\n" + this.left.GetProducts()
 	}
+}
+
+func (this *Product) ToString() string {
+
+	if this == nil {
+		return ""
+	}
+
+	var text string
+
+	text = this.Name + strconv.Itoa(this.Code) + this.Description + strconv.Itoa(this.Stock) + this.Image + this.Almacenamiento
+
+	return text
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 //import jsonData from '../';
 
-import { Shop, Product, CarProduct, Authenticate, User } from './../interfaces/requests';
+import { Shop, Product, CarProduct, Authenticate, User, ForComment, ShopComment } from './../interfaces/requests';
 
 @Injectable({
   providedIn: 'root'
@@ -43,5 +43,17 @@ export class RequestsService {
     const path = "http://localhost:3000/NewUser"
 
     return this.http.put(path, user);
+  }
+
+  ProductComment(comment : ForComment){
+    const path = "http://localhost:3000/ProductComment";
+
+    return this.http.put(path, comment);
+  }
+
+  CommentShop(comment : ShopComment){
+    const path = "http://localhost:3000/ShopComment";
+
+    return this.http.put(path, comment)
   }
 }

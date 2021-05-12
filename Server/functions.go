@@ -26,10 +26,12 @@ var finder Structures.Search
 var yearOrder *Structures.Year
 var Accounts *Structures.NodeAccounts
 var CurrentUser *Structures.Account
+var CurrentShop *Structures.Shop
 var MerkleTreeO *Structures.MerkleTreeOrders
 var MerkleTreeS *Structures.MerkleTreeShops
 var MerkleTreeP *Structures.MerkleTreeProducts
 var MerkleTreeU *Structures.MerkleTreeUsers
+var Blocks *Structures.Block
 
 func UploadShops(w http.ResponseWriter, r *http.Request) {
 	body, _ := ioutil.ReadAll(r.Body)
@@ -146,6 +148,7 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 			shop, find = vectorData[i].Search(name, score)
 			if find {
 				products = "[" + shop.GetProducts() + "]"
+				CurrentShop = shop
 				break
 			}
 		}
@@ -443,4 +446,44 @@ func addUser(w http.ResponseWriter, r *http.Request) {
 	//Accounts.Show(0)
 
 	fmt.Fprintln(w, "Se añadieron los usuarios correctamente")
+}
+
+func CreateBlock(w http.ResponseWriter, r *http.Request) {
+
+	Blocks = Blocks.GenerateBlock(MerkleTreeU, MerkleTreeO, MerkleTreeP, MerkleTreeS)
+
+	fmt.Fprintln(w, "Se Genero el bloque")
+}
+
+func CommentProduct(w http.ResponseWriter, r *http.Request) {
+	body, _ := ioutil.ReadAll(r.Body)
+	var comment Structures.CommentProduct
+
+	json.Unmarshal(body, &comment)
+
+	product := CurrentShop.Inventory.SearchProduct(&comment.Product)
+
+	newComment := &Structures.Comment{User: CurrentUser, Content: comment.Content}
+
+	product.Comments.AddComment(newComment)
+
+	fmt.Println("Comentario Agregado")
+}
+
+func CommentShop(w http.ResponseWriter, r *http.Request) {
+	body, _ := ioutil.ReadAll(r.Body)
+	var comment Structures.CommentShop
+
+	json.Unmarshal(body, &comment)
+
+	for i := 0; i < len(vectorData); i++ {
+		shop, find := vectorData[i].Search(comment.Shop.Name, comment.Shop.Score)
+		if find {
+			newComment := &Structures.Comment{User: CurrentUser, Content: comment.Content}
+			shop.Comentarios = shop.Comentarios.AddComment(newComment)
+			break
+		}
+	}
+
+	fmt.Println("Se añadio un comentario")
 }

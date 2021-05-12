@@ -36,3 +36,13 @@ func (this *Inventory) ReadJson(text []byte, data []ScoreCategory, merkle *Merkl
 
 	return data, merkle
 }
+
+type CommentProduct struct {
+	Product Product `json:"Producto"`
+	Content string  `json:"Contenido"`
+}
+
+type CommentShop struct {
+	Shop    Shop   `json:"Tienda"`
+	Content string `json:"Contenido"`
+}

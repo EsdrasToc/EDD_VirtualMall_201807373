@@ -17,7 +17,7 @@
       <div id="home" class="tab-pane fade in active"><!--TIENDAS-->
         
         <div class="container">
-          <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+          <!--<div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
               <div *ngFor="let shop of shops" class="card mb-4 shadow-sm">
                   <div class="card-header">
                   <h4 class="my-0 fw-normal">{{ shop.Nombre }}</h4>
@@ -27,7 +27,47 @@
                   <button type="button" class="w-100 btn btn-lg btn-outline-primary" (click)="getProducts(shop.Nombre , shop.Calificacion, shop)">Ingresar</button>
                   </div>
               </div>
-          </div>
+          </div>-->
+
+          <div *ngFor="let shop of shops" class="row">
+            <div class="col-md-4">
+              <div class="card mb-4 shadow-sm">
+                <div class="card-header">
+                <h4 class="my-0 fw-normal">{{ shop.Nombre }}</h4>
+                </div>
+                <div class="card-body">
+                <img src="{{ shop.Logo }}" class="img-thumbnail" >
+                <button type="button" class="w-100 btn btn-lg btn-outline-primary" (click)="getProducts(shop.Nombre , shop.Calificacion, shop)">Ingresar</button>
+                </div>
+            </div>
+            </div>
+            <div class="col-md-8">
+              <div class="scrollarea">
+                <div *ngFor="let comment of shop.Comentarios" class="row">
+                  <div class="col-md-12">
+                    <div class="user">
+                      Nombre: {{ comment.Usuario.Nombre }}
+                    </div>
+                    <div class="content">
+                      {{ comment.Contenido }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="down">
+                <div class="row">
+                  <div class="col-md-9">
+                    <input type="text" id="comentario" [(ngModel)]="comment"  style="float: left;" placeholder="Comentario..."> 
+                  </div>
+                  
+                  <div class="col-md-3">
+                    <button type="button" id="Comentar" class="btn btn-lg btn-outline-primary" style="float: left;" (click)="CommentShop(shop)">Comentar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>          
         </div>
         
       </div>
@@ -35,11 +75,13 @@
       <div id="menu1" class="tab-pane fade"> <!--PRODUCTOS-->
         
         <div class="container">
-          <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-            <div *ngFor="let product of products" class="card mb-4 shadow-sm">
-              <!--<app-productos [nombre]="product.Nombre" [codigo]="product.Codigo" [descripcion]="product.Descripcion" [precio]="product.Precio" [cantidad]="product.Cantidad" [imagen]="product.Imagen"></app-productos>-->
-              <app-productos [producto]="product" [tienda]="currentShop" (response)="addToCar($event)"></app-productos>
-            </div>
+          <!--<div class="row row-cols-1 row-cols-md-3 mb-3 text-center">-->
+          <div class="row row-cols-1 row-cols-md-12 mb-3 text-center">
+            Hola mundo
+            <ng-template *ngFor="let product of products">
+              HOLAAAAAA
+              <app-productos [producto]="product" [tienda]="currentShop" [user]="currentUser" (response)="addToCar($event)"></app-productos>
+            </ng-template>
           </div>
         </div>
       

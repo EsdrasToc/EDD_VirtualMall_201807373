@@ -8,16 +8,17 @@ import (
 )
 
 type Shop struct {
-	Name           string   `json:"Nombre"`
-	Description    string   `json:"Descripcion"`
-	Contact        string   `json:"Contacto"`
-	Score          int      `json:"Calificacion"`
-	Logo           string   `json:"Logo"`
-	Almacenamiento string   `json:"Almacenamiento"`
-	Inventory      *Product `json:"-"`
-	Previous       *Shop    `json:"-"`
-	Next           *Shop    `json:"-"`
-	Node           `json:"-"`
+	Name           string    `json:"Nombre"`
+	Description    string    `json:"Descripcion"`
+	Contact        string    `json:"Contacto"`
+	Score          int       `json:"Calificacion"`
+	Logo           string    `json:"Logo"`
+	Almacenamiento string    `json:"Almacenamiento"`
+	Comentarios    *Comments `json:"-"`
+	Inventory      *Product  `json:"-"`
+	Previous       *Shop     `json:"-"`
+	Next           *Shop     `json:"-"`
+	//Node           `json:"-"`
 }
 
 func (this Shop) ToString() string {
@@ -43,9 +44,15 @@ func (this Shop) ToJSON() string {
 
 func (this Shop) ToJSONRequest() string {
 
-	file, _ := json.MarshalIndent(this, "", "\t")
+	//file, _ := json.MarshalIndent(this, "", "\t")
+	var text string
 
-	return string(file)
+	text = "{\n\"Nombre\":\"" + this.Name + "\",\n\"Descripcion\":\"" + this.Description + "\",\n\"Contacto\":\"" + this.Contact + "\",\n\"Calificacion\":" + strconv.Itoa(this.Score) + ",\n\"Logo\":\"" + this.Logo + "\",\n\"Comentarios\":[" + this.Comentarios.ToJson() + "]\n}"
+	fmt.Println(text)
+
+	return text
+
+	//return string(file)
 }
 
 func (this Shop) GetProducts() string {

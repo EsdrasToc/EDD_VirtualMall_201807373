@@ -11,7 +11,15 @@ import { Shop, Product, CarProduct, Authenticate, User } from './interfaces/requ
 export class AppComponent implements OnInit{
   title = 'FrontendServer';
   shops : Shop[] = [];
-  products : Product[] = [];
+  products : Product[] = [
+    {
+      Nombre : "Hola",
+      Precio : 50.00,
+      Descripcion : "jytfjtfj",
+      Cantidad : 5,
+      Codigo : 5151,
+    }
+  ];
   shopName : String = "";
   shopScore : Number = 0;
   car :  CarProduct[] = [];
@@ -21,6 +29,7 @@ export class AppComponent implements OnInit{
   currentUser :  User;
   authenticate : boolean = false;
   aut : Authenticate = {Dpi : 0, Password:""};
+  comment :string ="";
 
   newUser : User = {Dpi:0, Nombre:"", Password:"", Correo:"", Cuenta:""};
 
@@ -63,10 +72,10 @@ export class AppComponent implements OnInit{
 
   getProducts(name:String, score:Number, shop : Shop){
     this.requestService.getProducts(name, score).subscribe(data => {
-      console.log(data)
       this.products = data;
       this.currentShop = shop;
       console.log(this.currentShop);
+      console.log(this.products);
     });
     //this.shopName = name;
     //this.shopScore = score;
@@ -167,5 +176,17 @@ export class AppComponent implements OnInit{
 
   Register(){
     this.requestService.NewUser(this.newUser).subscribe();
+  }
+
+  CommentShop(shop : Shop){
+    this.requestService.CommentShop({
+      Tienda : shop,
+      Contenido : this.comment,
+    }).subscribe()
+
+    console.log({
+      Tienda : shop,
+      Contenido : this.comment,
+    })
   }
 }
