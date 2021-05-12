@@ -487,3 +487,42 @@ func CommentShop(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("Se añadio un comentario")
 }
+
+func SCommentShop(w http.ResponseWriter, r *http.Request) {
+	body, _ := ioutil.ReadAll(r.Body)
+	var comment []Structures.CommentsShop
+
+	json.Unmarshal(body, &comment)
+
+	for i := 0; i < len(vectorData); i++ {
+		shop, find := vectorData[i].Search(comment[0].Shop.Name, comment[0].Shop.Score)
+		if find {
+			commentO := &Structures.Comment{User: &comment[0].User, Content: comment[0].Content}
+			newComment := &Structures.Comment{User: CurrentUser, Content: comment[1].Content}
+			shop.Comentarios = shop.Comentarios.AddSubComment(newComment, commentO)
+			break
+		}
+	}
+
+	fmt.Println("Se añadio un comentario")
+}
+
+func SSCommentShop(w http.ResponseWriter, r *http.Request) {
+	body, _ := ioutil.ReadAll(r.Body)
+	var comment []Structures.CommentsShop
+
+	json.Unmarshal(body, &comment)
+
+	for i := 0; i < len(vectorData); i++ {
+		shop, find := vectorData[i].Search(comment[0].Shop.Name, comment[0].Shop.Score)
+		if find {
+			commentO := &Structures.Comment{User: &comment[0].User, Content: comment[0].Content}
+			comment1 := &Structures.Comment{User: &comment[1].User, Content: comment[1].Content}
+			newComment := &Structures.Comment{User: &comment[2].User, Content: comment[2].Content}
+			shop.Comentarios = shop.Comentarios.AddSubSubComment(newComment, comment1, commentO)
+			break
+		}
+	}
+
+	fmt.Println("Se añadio un comentario")
+}

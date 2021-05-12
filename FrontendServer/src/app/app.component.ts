@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RequestsService } from './services/requests.service';
-import { Shop, Product, CarProduct, Authenticate, User } from './interfaces/requests';
+import { Shop, Product, CarProduct, Authenticate, User, Comentario } from './interfaces/requests';
 
 @Component({
   selector: 'app-root',
@@ -188,5 +188,43 @@ export class AppComponent implements OnInit{
       Tienda : shop,
       Contenido : this.comment,
     })
+  }
+
+  SCommentShop(shop : Shop, comment0 : Comentario){
+    this.requestService.SCommentShop(
+      [
+        {
+          Tienda : shop,
+          Contenido : comment0.Contenido,
+          Usuario : comment0.Usuario
+        },
+        {
+          Tienda : shop,
+          Contenido : this.comment,
+          Usuario : this.currentUser
+        }
+      ]
+    ).subscribe()
+  }
+
+  SSCommentShop(shop : Shop, comment0 : Comentario, comment1 : Comentario){
+    this.requestService.SSCommentShop(
+      [
+        {
+          Tienda : shop,
+          Contenido : comment0.Contenido,
+          Usuario : comment0.Usuario
+        },{
+          Tienda : shop,
+          Contenido : comment1.Contenido,
+          Usuario : comment1.Usuario
+        },
+        {
+          Tienda : shop,
+          Contenido : this.comment,
+          Usuario : this.currentUser
+        }
+      ]
+    ).subscribe()
   }
 }

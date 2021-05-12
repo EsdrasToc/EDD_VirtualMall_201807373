@@ -51,7 +51,7 @@ export interface Pedido{
 export interface Comentario{
 	Usuario : User;
 	Contenido : String;
-	SubComentarios : Comentario[];
+	Comentarios : Comentario[];
 }
 
 export interface ForComment{
@@ -62,4 +62,10 @@ export interface ForComment{
 export interface ShopComment{
 	Tienda : Shop;
 	Contenido : String;
+}
+
+export interface ShopComments{
+	Tienda : Shop;
+	Contenido : String;
+	Usuario : User;
 }

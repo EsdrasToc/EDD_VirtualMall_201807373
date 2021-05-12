@@ -46,3 +46,9 @@ type CommentShop struct {
 	Shop    Shop   `json:"Tienda"`
 	Content string `json:"Contenido"`
 }
+
+type CommentsShop struct {
+	Shop    Shop    `json:"Tienda"`
+	Content string  `json:"Contenido"`
+	User    Account `json:"Usuario"`
+}

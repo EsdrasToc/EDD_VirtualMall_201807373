@@ -47,10 +47,41 @@
                   <div class="col-md-12">
                     <div class="user">
                       Nombre: {{ comment.Usuario.Nombre }}
+                      <button id="SComentar" style="float: right;" (click)="SCommentShop(shop, comment)">Responder</button>
                     </div>
                     <div class="content">
                       {{ comment.Contenido }}
                     </div>
+
+                      <div *ngFor="let scomment of comment.Comentarios" class="row">
+
+                        <div class="col-md-1"></div>
+                        <div class="col-md-11">
+                          <div class="user">
+                            Nombre: {{ scomment.Usuario.Nombre }}
+                            <button id="SSComentar" style="float: right;" (click)="SSCommentShop(shop, comment, scomment)">Responder</button>
+                          </div>
+                          <div class="content">
+                            {{ scomment.Contenido }}
+                          </div>
+                        </div>
+
+                        <div *ngFor="let sscomment of scomment.Comentarios" class="row">
+
+                          <div class="col-md-2"></div>
+                          <div class="col-md-10">
+                            <div class="user">
+                              Nombre: {{ sscomment.Usuario.Nombre }}
+                            </div>
+                            <div class="content">
+                              {{ sscomment.Contenido }}
+                            </div>
+                          </div>
+  
+                        </div>
+
+                      </div>
+
                   </div>
                 </div>
               </div>

@@ -1,5 +1,7 @@
 package Structures
 
+import "fmt"
+
 type Comments struct {
 	Comments []*Comment
 	InUse    int
@@ -65,6 +67,7 @@ func (this *Comments) AddComment(newComment *Comment) *Comments {
 		newTable.ReHash(this)
 	}
 
+	fmt.Println(newComment)
 	return this
 }
 
@@ -100,23 +103,25 @@ func (this *Comments) CalcPercent() float32 {
 	return percent
 }
 
-func (this *Comments) AddSubComment(newSComment *Comment, comment *Comment) {
+func (this *Comments) AddSubComment(newSComment *Comment, comment *Comment) *Comments {
 	i := this.HashFunction(comment)
 
 	aux := this.Comments[i].SearchComment(comment)
 
-	aux.SubComment.AddComment(newSComment)
+	aux.SubComment = aux.SubComment.AddComment(newSComment)
 
+	return this
 }
 
-func (this *Comments) AddSubSubComment(newSSComment *Comment, SComment *Comment, comment *Comment) {
+func (this *Comments) AddSubSubComment(newSSComment *Comment, SComment *Comment, comment *Comment) *Comments {
 	i := this.HashFunction(comment)
 
 	aux := this.Comments[i].SearchComment(comment)
 	aux2 := aux.SubComment.SearchComment(SComment)
 
-	aux2.SubComment.AddComment(newSSComment)
+	aux2.SubComment = aux2.SubComment.AddComment(newSSComment)
 
+	return this
 }
 
 /*func (this *Comments) SearchComment(search *Comment) *Comment {
@@ -150,11 +155,11 @@ func (this *Comment) ToJson() string {
 	aux := this
 
 	for aux.Next != nil {
-		text = text + "{\n\"Usuario\":" + this.User.AccountToJson() + ",\n\"SubComentarios\": [\n" + this.SubComment.ToJson() + "\n],\n\"Contenido\":\"" + this.Content + "\"\n},"
+		text = text + "{\n\"Usuario\":" + aux.User.AccountToJson() + ",\n\"Comentarios\": [\n" + aux.SubComment.ToJson() + "\n],\n\"Contenido\":\"" + aux.Content + "\"\n},"
 		aux = aux.Next
 	}
 
-	text = text + "{\n\"Usuario\":" + this.User.AccountToJson() + ",\n\"SubComentarios\": [\n" + this.SubComment.ToJson() + "\n],\n\"Contenido\":\"" + this.Content + "\"\n}"
+	text = text + "{\n\"Usuario\":" + aux.User.AccountToJson() + ",\n\"Comentarios\": [\n" + aux.SubComment.ToJson() + "\n],\n\"Contenido\":\"" + aux.Content + "\"\n}"
 
 	return text
 }
