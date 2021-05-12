@@ -37,7 +37,7 @@ func (this *Comments) ToJson() string {
 			text = text + text2
 		} else {
 			//text = text + "{\n\"Comentarios\":[\n" + text2 + "\n]\n}\n,\n"
-			text = text + text2
+			text = text + text2 + ",\n"
 		}
 	}
 
@@ -60,32 +60,38 @@ func (this *Comments) AddComment(newComment *Comment) *Comments {
 
 	this.Comments[i] = this.Comments[i].AddComment(newComment)
 
+	fmt.Println("Porcentaje de Uso:")
+	fmt.Println(fmt.Sprintf("%f", this.CalcPercent()))
+
 	if this.CalcPercent() >= 0.6 {
 		var newTable *Comments
 
 		newTable = newTable.Init(SearchNumber(this.Size))
-		newTable.ReHash(this)
+		this = newTable.ReHash(this)
 	}
-
-	fmt.Println(newComment)
 	return this
 }
 
-func (this *Comments) ReHash(old *Comments) {
-	salir := false
+func (this *Comments) ReHash(old *Comments) *Comments {
+	//salir := false
 	for i := 0; i < len(old.Comments); i++ {
-		salir = false
-		for !salir {
-			aux := old.Comments[i].GetFirst()
+		//salir = false
+		aux := old.Comments[i]
+		for aux != nil {
+			//aux := old.Comments[i].GetFirst()
 
-			if aux != nil {
-				this.AddComment(aux)
-			} else {
+			//if aux != nil {
+			this.AddComment(&Comment{User: aux.User, Content: aux.Content, SubComment: aux.SubComment})
+			/*} else {
 				salir = true
-			}
+			}*/
+
+			aux = aux.Next
 		}
 
 	}
+
+	return this
 }
 
 func (this *Comments) CalcPercent() float32 {
@@ -97,8 +103,13 @@ func (this *Comments) CalcPercent() float32 {
 	}
 
 	var percent float32
-
-	percent = float32(counter / this.Size)
+	fmt.Println("==================")
+	fmt.Print("Contador: ")
+	fmt.Println(counter)
+	fmt.Print("Tamaño de la tabla: ")
+	fmt.Println(this.Size)
+	fmt.Println("==================")
+	percent = float32(counter) / float32(this.Size)
 
 	return percent
 }
