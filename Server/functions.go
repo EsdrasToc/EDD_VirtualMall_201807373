@@ -526,3 +526,13 @@ func SSCommentShop(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("Se añadio un comentario")
 }
+
+func TimerBlocks() {
+	fmt.Println("Estoy contando el tiempo")
+	i := true
+	for i {
+		time.Sleep(5 * time.Minute)
+
+		Blocks = Blocks.GenerateBlock(MerkleTreeU, MerkleTreeO, MerkleTreeP, MerkleTreeS)
+	}
+}

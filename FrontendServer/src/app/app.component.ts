@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RequestsService } from './services/requests.service';
 import { Shop, Product, CarProduct, Authenticate, User, Comentario } from './interfaces/requests';
 
@@ -8,18 +8,10 @@ import { Shop, Product, CarProduct, Authenticate, User, Comentario } from './int
   styleUrls: ['./app.component.css'],
   providers: [RequestsService]
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnDestroy{
   title = 'FrontendServer';
   shops : Shop[] = [];
-  products : Product[] = [
-    {
-      Nombre : "Hola",
-      Precio : 50.00,
-      Descripcion : "jytfjtfj",
-      Cantidad : 5,
-      Codigo : 5151,
-    }
-  ];
+  products : Product[] = [];
   shopName : String = "";
   shopScore : Number = 0;
   car :  CarProduct[] = [];
@@ -38,21 +30,17 @@ export class AppComponent implements OnInit{
     private productosComponent:ProductosComponent*/
   ){}
 
-  ngOnInit(){
+  ngOnDestroy(){
+    this.requestService.Blocks().subscribe();
+  }
 
 
+  Autenticar(){
     this.requestService.getShops().subscribe(data => {
       //console.log(dd+" "+mm+" "+yyyy)
       console.log(data);
       this.shops = data;
     });
-    /*this.requestService.getProducts("Samsung", 3).subscribe(data => {
-      this.products = data;
-    });*/
-
-  }
-
-  Autenticar(){
     console.log(this.aut)
     this.requestService.authenticate(this.aut).subscribe(data =>{
       console.log(data)

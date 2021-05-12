@@ -68,4 +68,10 @@ export class RequestsService {
 
     return this.http.put(path, comment)
   }
+
+  Blocks(){
+    const path = "http://localhost:3000/Block";
+
+    return this.http.get(path)
+  }
 }

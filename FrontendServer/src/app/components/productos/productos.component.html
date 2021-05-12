@@ -24,11 +24,42 @@
     <div *ngFor="let comment of producto.Comentarios" class="row">
       <div class="col-md-12">
         <div class="user">
-          {{ comment.Usuario.Dpi }}
+          Usuario: {{ comment.Usuario.Nombre }}
         </div>
         <div class="content">
           {{ comment.Contenido }}
+          <button id="SComentar" style="float: right;">Responder</button>
         </div>
+
+        <div *ngFor="let scomment of comment.Comentarios" class="row">
+
+          <div class="col-md-1"></div>
+          <div class="col-md-11">
+            <div class="user">
+              Nombre: {{ scomment.Usuario.Nombre }}
+              <button id="SSComentar" style="float: right;">Responder</button>
+            </div>
+            <div class="content">
+              {{ scomment.Contenido }}
+            </div>
+          </div>
+
+          <div *ngFor="let sscomment of scomment.Comentarios" class="row">
+
+            <div class="col-md-2"></div>
+            <div class="col-md-10">
+              <div class="user">
+                Nombre: {{ sscomment.Usuario.Nombre }}
+              </div>
+              <div class="content">
+                {{ sscomment.Contenido }}
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
     </div>
   </div>
