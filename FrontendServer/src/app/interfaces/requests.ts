@@ -69,3 +69,9 @@ export interface ShopComments{
 	Contenido : String;
 	Usuario : User;
 }
+
+export interface ProductComments{
+	Contenido : String;
+	Usuario : User;
+	Producto : Product;
+}

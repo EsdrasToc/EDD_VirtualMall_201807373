@@ -470,9 +470,50 @@ func CommentProduct(w http.ResponseWriter, r *http.Request) {
 
 	product := CurrentShop.Inventory.SearchProduct(&comment.Product)
 
+	fmt.Print("El producto es: ")
+	fmt.Println(product)
+
 	newComment := &Structures.Comment{User: CurrentUser, Content: comment.Content}
 
-	product.Comments.AddComment(newComment)
+	product.Comments = product.Comments.AddComment(newComment)
+
+	fmt.Println(product.ToJson())
+
+	fmt.Println("Comentario Agregado")
+}
+
+func SSCommentProduct(w http.ResponseWriter, r *http.Request) {
+	body, _ := ioutil.ReadAll(r.Body)
+	var comment []Structures.CommentsProduct
+
+	json.Unmarshal(body, &comment)
+
+	product := CurrentShop.Inventory.SearchProduct(&comment[0].Product)
+	newComment := &Structures.Comment{User: &comment[2].User, Content: comment[2].Content}
+	SComment := &Structures.Comment{User: &comment[1].User, Content: comment[1].Content}
+	Comment := &Structures.Comment{User: &comment[0].User, Content: comment[0].Content}
+
+	product.Comments = product.Comments.AddSubSubComment(newComment, SComment, Comment)
+
+	fmt.Println(product.ToJson())
+
+	fmt.Println("Comentario Agregado")
+}
+
+func SCommentProduct(w http.ResponseWriter, r *http.Request) {
+	body, _ := ioutil.ReadAll(r.Body)
+	var comment []Structures.CommentsProduct
+
+	json.Unmarshal(body, &comment)
+
+	product := CurrentShop.Inventory.SearchProduct(&comment[0].Product)
+
+	newComment := &Structures.Comment{User: &comment[1].User, Content: comment[1].Content}
+	Comment := &Structures.Comment{User: &comment[0].User, Content: comment[0].Content}
+
+	product.Comments = product.Comments.AddSubComment(newComment, Comment)
+
+	fmt.Println(product.ToJson())
 
 	fmt.Println("Comentario Agregado")
 }

@@ -52,3 +52,9 @@ type CommentsShop struct {
 	Content string  `json:"Contenido"`
 	User    Account `json:"Usuario"`
 }
+
+type CommentsProduct struct {
+	Product Product `json:"Producto"`
+	Content string  `json:"Contenido"`
+	User    Account `json:"Usuario"`
+}

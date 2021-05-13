@@ -28,7 +28,7 @@
         </div>
         <div class="content">
           {{ comment.Contenido }}
-          <button id="SComentar" style="float: right;">Responder</button>
+          <button id="SComentar" style="float: right;" (click)="SCommentP(producto, comment)">Responder</button>
         </div>
 
         <div *ngFor="let scomment of comment.Comentarios" class="row">
@@ -37,7 +37,7 @@
           <div class="col-md-11">
             <div class="user">
               Nombre: {{ scomment.Usuario.Nombre }}
-              <button id="SSComentar" style="float: right;">Responder</button>
+              <button id="SSComentar" style="float: right;" (click)="SSCommentP(producto, comment, scomment)">Responder</button>
             </div>
             <div class="content">
               {{ scomment.Contenido }}

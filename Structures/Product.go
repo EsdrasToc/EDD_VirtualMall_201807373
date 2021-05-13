@@ -126,6 +126,7 @@ func (this *Product) SearchProduct(product *Product) *Product {
 	}
 
 	if this.Code == product.Code && this.Name == product.Name {
+		fmt.Println("SE ENCONTRO EL PRODUCTO")
 		return this
 	}
 

@@ -48,6 +48,8 @@ func New() Server {
 	r.HandleFunc("/NewUser", addUser).Methods("PUT")
 	r.HandleFunc("/Block", CreateBlock).Methods("GET")
 	r.HandleFunc("/ProductComment", CommentProduct).Methods("PUT")
+	r.HandleFunc("/ProductSComment", SCommentProduct).Methods("PUT")
+	r.HandleFunc("/ProductSSComment", SSCommentProduct).Methods("PUT")
 	r.HandleFunc("/ShopComment", CommentShop).Methods("PUT")
 	r.HandleFunc("/ShopSComment", SCommentShop).Methods("PUT")
 	r.HandleFunc("/ShopSSComment", SSCommentShop).Methods("PUT")

@@ -60,4 +60,41 @@ export class ProductosComponent implements OnInit{
     ).subscribe();
   }
 
+  SCommentP(product : Product, comment0 : Comentario){
+    this.request.SCommentP(
+      [
+        {
+          Producto : product,
+          Contenido : comment0.Contenido,
+          Usuario : comment0.Usuario
+        },
+        {
+          Producto : product,
+          Contenido : this.comentario,
+          Usuario : this.user
+        }
+      ]
+    ).subscribe()
+  }
+
+  SSCommentP(product : Product, comment0 : Comentario, comment1 : Comentario){
+    this.request.SSCommentP(
+      [
+        {
+          Producto : product,
+          Contenido : comment0.Contenido,
+          Usuario : comment0.Usuario
+        },{
+          Producto : product,
+          Contenido : comment1.Contenido,
+          Usuario : comment1.Usuario
+        },
+        {
+          Producto : product,
+          Contenido : this.comentario,
+          Usuario : this.user
+        }
+      ]
+    ).subscribe()
+  }
 }
