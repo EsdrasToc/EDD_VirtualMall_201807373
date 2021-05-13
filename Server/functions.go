@@ -454,6 +454,10 @@ func addUser(w http.ResponseWriter, r *http.Request) {
 func CreateBlock(w http.ResponseWriter, r *http.Request) {
 
 	Blocks = Blocks.GenerateBlock(MerkleTreeU, MerkleTreeO, MerkleTreeP, MerkleTreeS)
+	MerkleTreeU = nil
+	MerkleTreeO = nil
+	MerkleTreeP = nil
+	MerkleTreeS = nil
 
 	fmt.Fprintln(w, "Se Genero el bloque")
 }
@@ -537,6 +541,10 @@ func TimerBlocks() {
 		time.Sleep(5 * time.Minute)
 
 		Blocks = Blocks.GenerateBlock(MerkleTreeU, MerkleTreeO, MerkleTreeP, MerkleTreeS)
+		MerkleTreeU = nil
+		MerkleTreeO = nil
+		MerkleTreeP = nil
+		MerkleTreeS = nil
 	}
 }
 

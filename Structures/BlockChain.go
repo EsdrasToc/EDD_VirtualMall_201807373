@@ -28,7 +28,7 @@ func (this *Block) GenerateBlock(merkleU *MerkleTreeUsers, merkleO *MerkleTreeOr
 		this.PreviousHash = this.Hash
 	}
 	var text string
-	valido := false
+	valido := true
 	this.Date = time.Now().String()
 	//this.Data = string(merkleU.Root.Hash) + string(merkleO.Root.Hash) + string(merkleP.Root.Hash) + string(merkleS.Root.Hash)
 	this.Data = merkleU.GetHash() + merkleO.GetHash() + merkleP.GetHash() + merkleS.GetHash()
@@ -45,18 +45,23 @@ func (this *Block) GenerateBlock(merkleU *MerkleTreeUsers, merkleO *MerkleTreeOr
 		this.Nonce++
 
 		if hash[0] <= 15 {
+			fmt.Println("ESTE ES EL HASH:")
 			fmt.Println(hash)
-			valido = true
+			valido = false
 			this.Hash = hash
 		}
 	}
 
-	text = strconv.Itoa(this.Index) + "\n" + this.Date + "\n" + this.Data + "\n" + strconv.Itoa(this.Nonce) + "\n" + base64.URLEncoding.EncodeToString(this.PreviousHash) + "\n" + base64.URLEncoding.EncodeToString(this.Hash)
+	if this.Data == "" {
+		text = strconv.Itoa(this.Index) + "\n" + this.Date + "\n===============\n" + strconv.Itoa(this.Nonce) + "\n" + base64.URLEncoding.EncodeToString(this.PreviousHash) + "\n" + base64.URLEncoding.EncodeToString(this.Hash)
+	} else {
+		text = strconv.Itoa(this.Index) + "\n" + this.Date + "\n" + this.Data + "\n" + strconv.Itoa(this.Nonce) + "\n" + base64.URLEncoding.EncodeToString(this.PreviousHash) + "\n" + base64.URLEncoding.EncodeToString(this.Hash)
+	}
 	fmt.Println(text)
 	data := []byte(text)
 	ioutil.WriteFile(strconv.Itoa(this.Index), data, 0644)
 
 	this.Nonce = 0
-
+	this.Index++
 	return this
 }
