@@ -15,6 +15,8 @@ export class AppComponent implements OnInit{
   Password: String = "";
   Nombre: String = "";
 
+  time :Number = 1;
+
   constructor(
     private requestService:ServicesService
   ){}
@@ -49,5 +51,9 @@ export class AppComponent implements OnInit{
 
   GraphMS(){
     this.requestService.GraphMS().subscribe()
+  }
+
+  Time(){
+    this.requestService.ChangeTime(this.time).subscribe()
   }
 }

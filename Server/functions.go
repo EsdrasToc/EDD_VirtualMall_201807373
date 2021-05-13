@@ -575,11 +575,20 @@ func SSCommentShop(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Se añadio un comentario")
 }
 
+func ChangeTime(w http.ResponseWriter, r *http.Request) {
+	t, _ := mux.Vars(r)["Tiempo"]
+	tiempo, _ = strconv.Atoi(t)
+
+	fmt.Println("El nuevo tiempo es:")
+	fmt.Println(tiempo)
+}
+
 func TimerBlocks() {
 	fmt.Println("Estoy contando el tiempo")
 	i := true
+	tiempo = 5
 	for i {
-		time.Sleep(5 * time.Minute)
+		time.Sleep(time.Duration(tiempo) * time.Minute)
 
 		Blocks = Blocks.GenerateBlock(MerkleTreeU, MerkleTreeO, MerkleTreeP, MerkleTreeS)
 		MerkleTreeU = nil

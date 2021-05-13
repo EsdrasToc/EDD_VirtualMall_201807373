@@ -34,6 +34,9 @@
       <button id="btnM" type="button" class="btn btn-primary" (click)="GraphMS()">Tiendas</button>
       <button id="btnM" type="button" class="btn btn-primary" (click)="GraphMU()">Usuarios</button>
       <button id="btnM" type="button" class="btn btn-primary" (click)="GraphMP()">Productos</button>
+      <h2 id="btnM">Intervalo de tiempo entre bloques</h2>
+      <input type="number" min="1" id="minutes" placeholder="Tiempo en minutos..." [(ngModel)]="time">
+      <button id="changeTime" type="button" class="btn btn-primary" (click)="Time()">Cambiar tiempo</button>
       
     </div>
   </div>

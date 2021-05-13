@@ -66,4 +66,10 @@ export class ServicesService {
 
     return this.http.get(path)
   }
+
+  ChangeTime(i : Number){
+    const path = 'http://localhost:3000/Time/'+i;
+
+    return this.http.get(path)
+  }
 }

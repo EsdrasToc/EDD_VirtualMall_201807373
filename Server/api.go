@@ -57,6 +57,7 @@ func New() Server {
 	r.HandleFunc("/GraphMP", GraphMP).Methods("GET")
 	r.HandleFunc("/GraphMU", GraphMU).Methods("GET")
 	r.HandleFunc("/GraphMS", GraphMS).Methods("GET")
+	r.HandleFunc("/Time/{Tiempo:[1-9]+}", ChangeTime).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":3000", handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"}), handlers.AllowedOrigins([]string{"*"}))(r)))
 
