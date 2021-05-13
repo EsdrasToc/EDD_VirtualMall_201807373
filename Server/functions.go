@@ -32,6 +32,7 @@ var MerkleTreeS *Structures.MerkleTreeShops
 var MerkleTreeP *Structures.MerkleTreeProducts
 var MerkleTreeU *Structures.MerkleTreeUsers
 var Blocks *Structures.Block
+var tiempo int
 
 func UploadShops(w http.ResponseWriter, r *http.Request) {
 	body, _ := ioutil.ReadAll(r.Body)
@@ -221,6 +222,8 @@ func addOrders(w http.ResponseWriter, r *http.Request) {
 				//Ahora añadimos la orden al mes
 				day, err := strconv.Atoi(years[0])
 				if err == nil {
+
+					MerkleTreeO = MerkleTreeO.AddOrder(&orders.Orders[i])
 					mes.AddOrder(orders.Orders[i].Departament, day, &orders.Orders[i])
 				}
 			}
@@ -535,4 +538,20 @@ func TimerBlocks() {
 
 		Blocks = Blocks.GenerateBlock(MerkleTreeU, MerkleTreeO, MerkleTreeP, MerkleTreeS)
 	}
+}
+
+func GraphMO(w http.ResponseWriter, r *http.Request) {
+	MerkleTreeO.Graph()
+}
+
+func GraphMP(w http.ResponseWriter, r *http.Request) {
+	MerkleTreeP.Graph()
+}
+
+func GraphMU(w http.ResponseWriter, r *http.Request) {
+	MerkleTreeU.Graph()
+}
+
+func GraphMS(w http.ResponseWriter, r *http.Request) {
+	MerkleTreeS.Graph()
 }

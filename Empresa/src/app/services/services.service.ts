@@ -42,4 +42,28 @@ export class ServicesService {
 
     return this.http.post(path, body);
   }
+
+  GraphMO(){
+    const path = 'http://localhost:3000/GraphMO'
+
+    return this.http.get(path)
+  }
+
+  GraphMP(){
+    const path = 'http://localhost:3000/GraphMP'
+
+    return this.http.get(path)
+  }
+
+  GraphMU(){
+    const path = 'http://localhost:3000/GraphMU'
+
+    return this.http.get(path)
+  }
+
+  GraphMS(){
+    const path = 'http://localhost:3000/GraphMS'
+
+    return this.http.get(path)
+  }
 }

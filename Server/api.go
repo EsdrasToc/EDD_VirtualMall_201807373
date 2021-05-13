@@ -51,6 +51,10 @@ func New() Server {
 	r.HandleFunc("/ShopComment", CommentShop).Methods("PUT")
 	r.HandleFunc("/ShopSComment", SCommentShop).Methods("PUT")
 	r.HandleFunc("/ShopSSComment", SSCommentShop).Methods("PUT")
+	r.HandleFunc("/GraphMO", GraphMO).Methods("GET")
+	r.HandleFunc("/GraphMP", GraphMP).Methods("GET")
+	r.HandleFunc("/GraphMU", GraphMU).Methods("GET")
+	r.HandleFunc("/GraphMS", GraphMS).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":3000", handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"}), handlers.AllowedOrigins([]string{"*"}))(r)))
 

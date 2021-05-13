@@ -34,4 +34,20 @@ export class AppComponent implements OnInit{
       this.authenticate = true;
     }
   }
+
+  GraphMO(){
+    this.requestService.GraphMO().subscribe()
+  }
+
+  GraphMP(){
+    this.requestService.GraphMP().subscribe()
+  }
+
+  GraphMU(){
+    this.requestService.GraphMU().subscribe()
+  }
+
+  GraphMS(){
+    this.requestService.GraphMS().subscribe()
+  }
 }
